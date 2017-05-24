@@ -1,0 +1,104 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="store.ifresh.os.fitness.dao.GymItemMapper" >
+  <resultMap id="GymItemMap" type="store.ifresh.os.fitness.model.entity.GymItem" >
+    <result column="item_id" property="itemId" jdbcType="INTEGER" />
+    <result column="create_time" property="createTime" jdbcType="TIMESTAMP" />
+    <result column="update_time" property="updateTime" jdbcType="TIMESTAMP" />
+    <result column="item_name" property="itemName" jdbcType="VARCHAR" />
+    <result column="item_price" property="itemPrice" jdbcType="BIGINT" />
+    <result column="gym_id" property="gymId" jdbcType="INTEGER" />
+    <result column="status" property="status" jdbcType="SMALLINT" />
+  </resultMap>
+  
+  <sql id="Base_Column_List" >
+    item_id, 
+    create_time, 
+    update_time, 
+    item_name, 
+    item_price, 
+    gym_id,
+    status
+  </sql>
+  
+  <sql id="Insert_Column_List" >
+    item_name, 
+    item_price, 
+    gym_id,
+    status
+  </sql>
+  
+	<sql id="Where_Clause" >
+		<if test="itemId != null">
+        and item_id = #{itemId,jdbcType=INTEGER}
+        </if>
+        <if test="itemName != null">
+        and item_name = #{itemName,jdbcType=INTEGER}
+        </if>
+        <if test="itemPrice != null">
+        and item_price = #{itemPrice,jdbcType=INTEGER}
+        </if>    
+        <if test="gymId != null">
+        and gym_id = #{gymId,jdbcType=INTEGER}
+        </if>
+        <if test="createTime != null">
+        and create_time = #{createTime,jdbcType=TIMESTAMP}
+        </if>
+        <if test="updateTime != null">
+        and update_time = #{updateTime,jdbcType=TIMESTAMP}
+        </if>
+        <if test="status != null">
+        and status = #{status,jdbcType=SMALLINT}
+        </if>
+    </sql>
+  
+  <select id="selectByPrimaryKey" resultMap="GymItemMap" parameterType="java.lang.Integer" >
+    select 
+    <include refid="Base_Column_List" />
+    from fit_gym_item
+    where item_id = #{itemId,jdbcType=INTEGER}
+  </select>
+  
+  <select id="selectGymItemBySelective" resultMap="GymItemMap" parameterType="store.ifresh.os.fitness.model.entity.GymItem" >
+    select 
+    <include refid="Base_Column_List" />
+    from fit_gym_item
+    <where>
+		<if test="_parameter != null" >
+			<include refid="Where_Clause" />
+		</if>
+	</where>
+  </select>
+  
+  <select id="selectByGymId" resultMap="GymItemMap" parameterType="java.lang.Integer" >
+    select 
+    <include refid="Base_Column_List" />
+    from fit_gym_item
+    where gym_id = #{gymId,jdbcType=INTEGER} and status = 0
+  </select>
+  
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer" >
+    delete from fit_gym_item
+    where item_id = #{itemId,jdbcType=INTEGER}
+  </delete>
+  
+  <insert id="insertGymItem" parameterType="store.ifresh.os.fitness.model.entity.GymItem" useGeneratedKeys="true" keyProperty="itemId">
+    	insert into fit_gym_item (<include refid="Insert_Column_List" />) 
+    	values (
+    		#{itemName,jdbcType=VARCHAR,typeHandler=store.ifresh.os.fitness.framework.typehandler.StringNullTypeHandler},
+    		#{itemPrice,jdbcType=BIGINT,typeHandler=store.ifresh.os.fitness.framework.typehandler.LongNullTypeHandler},
+    		#{gymId,jdbcType=INTEGER,typeHandler=store.ifresh.os.fitness.framework.typehandler.IntegerNullTypeHandler},
+    		#{status,jdbcType=SMALLINT,typeHandler=store.ifresh.os.fitness.framework.typehandler.ShortNullTypeHandler}
+    	)
+  </insert>
+
+    <update id="updateByPrimaryKeySelective" parameterType="store.ifresh.os.fitness.model.entity.GymItem" >
+        update fit_gym_item
+        <set>
+			<if test="itemName != null"> item_name = #{itemName,jdbcType=VARCHAR}, </if>
+			<if test="itemPrice != null"> item_price = #{itemPrice,jdbcType=BIGINT}, </if>
+			<if test="status != null"> status = #{status,jdbcType=SMALLINT}, </if>
+        </set> 
+        where item_id = #{itemId,jdbcType=INTEGER}
+    </update>  
+</mapper>

@@ -1,0 +1,38 @@
+#J4LOG版本号
+j4log.version=2
+#J4LOG日志默认根目录
+j4log.root=${catalina.home}/logs/business_log
+#默认日志文件路径
+_j4log=business,${catalina.home}/logs/business_log/default/_j4log.log
+#日志级别
+j4log.level = DEBUG
+#服务使用的业务日志
+restApiPerformance=business,${catalina.home}/logs/business_log/performance/performance
+authority=info,${catalina.home}/logs/business_log/authority/authority
+doFilterInternal=info,${catalina.home}/logs/business_log/filter/doFilterInternal
+
+#taf_invoke=info,${catalina.home}/logs/taf_invoke.log
+#session_log=debug,${catalina.home}/logs/session_log.log
+#error_jump_debug=debug, ${catalina.home}/logs/error_jump_debug.log
+#debug=debug, ${catalina.home}/logs/debug.log
+#warning_debug=info, ${catalina.home}/logs/warning_debug.log
+#user_client_debug=debug, ${catalina.home}/logs/user_client.log
+#dyan-cache=debug, ${catalina.home}/logs/cache.log
+#GateServer=debug,${catalina.home}/logs/GateServer.log
+#依赖的公共包日志配置
+#jceClient=error, ${catalina.home}/logs/jceClient.log
+#kernel_log = info, ${catalina.home}/logs/kernel_log_ds.log
+#kernel_access = info,  ${catalina.home}/logs/kernel_access_ds.log
+#_j4log=ERROR, ${catalina.home}/logs/_j4log.log
+#UserProfileClient=error, ${catalina.home}/logs/UserProfileClient.log
+#remote_log: loggername = level, type, remote_address, faillog, locallog
+#userrelaclient = INFO, ${catalina.home}/logs/userrelaclient_access.log
+#profile_client_syslog=error, ${catalina.home}/logs/profile_client_syslog.log
+#kernelBotAccessLog  = info, ${catalina.home}/logs/kernelBotAccessLog.log
+#loginserver   = info, ${catalina.home}/logs/loginserver.log
+#interceptor=info, ${catalina.home}/logs/interceptor.log
+#info=info, ${catalina.home}/logs/info.log
+#ipcredit=info, ${catalina.home}/logs/ipcredit.log
+#speedUPCommunityDays = info, ${catalina.home}/logs/speedUPCommunityDays.log
+#ds_index_access=info, ${catalina.home}/logs/index_access.log
+#portalconfig=fatal, ${catalina.home}/logs/portalconfig.log

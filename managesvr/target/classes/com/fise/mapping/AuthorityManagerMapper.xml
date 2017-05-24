@@ -1,0 +1,52 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper 
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" 
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+
+<mapper namespace="com.fise.mapping.AuthorityManagerMapper">
+	
+	<resultMap type="com.fise.model.entity.AuthorityInfo" id="authorityinfo">
+		<id property="AuthorityId" column="id"/>
+		<result property="AuthorityName" column="AuthName"/>
+		<result property="AuthorityLevel" column="AuthLevel"/>
+		<result property="AuthRole" column="AuthRole"/>
+		<result property="FatherId" column="fid"/>
+		<result property="AuthInterface" column="AuthInterface"/>
+		<result property="AuthDescrible" column="AuthDescribe"/>
+	</resultMap>
+	
+	<sql id="sql">AuthName,AuthLevel,AuthRole,fid,AuthInterface,AuthDescribe</sql>
+	<sql id="test">id,AuthName,AuthLevel,AuthRole,fid,AuthInterface,AuthDescribe</sql>
+	
+	<insert id="insert_authority" parameterType="com.fise.model.entity.UserAuthority">
+		insert into IMUserAuthority 
+		(<include refid="sql"/>) 
+		values 
+		(#{AuthorityName},#{AuthorityLevel},#{AuthRole},#{FatherId},#{AuthInterface},#{AuthDescrible})
+	</insert>
+	
+	<update id="update_authority" parameterType="com.fise.model.entity.UserAuthority">
+		update IMUserAuthority 
+		<set>
+		<if test="AuthorityName!=null">AuthName=#{AuthorityName},</if>
+		<if test="AuthorityLevel!=0">AuthLevel=#{AuthorityLevel},</if>
+		<if test="AuthRole!=0">AuthRole=#{AuthRole},</if>
+		<if test="FatherId!=0">fid=#{FatherId},</if>
+		<if test="AuthInterface!=null">AuthInterface=#{AuthInterface},</if>
+		<if test="AuthDescrible!=null">AuthDescribe=#{AuthDescrible},</if>
+		</set>
+		where id=#{AuthenticId}
+	</update>
+	
+	<delete id="delete_authority" parameterType="com.fise.model.entity.UserAuthority">
+		delete from IMUserAuthority 
+		<where>
+			<if test="AuthorityLevel!=0">AuthLevel=#{AuthorityLevel}</if>
+			<if test="AuthenticId!=null">or id=#{AuthenticId}</if>
+		</where>
+	</delete>
+	
+	<select id="findAllAuthoritys" parameterType="int" resultMap="authorityinfo">
+		select<include refid="test"/>from IMUserAuthority where AuthRole=#{AuthRole}
+	</select>
+</mapper>

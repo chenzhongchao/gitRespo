@@ -1,0 +1,197 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="store.ifresh.os.fitness.dao.OrderItemsMapper" >
+  <resultMap id="OrderItemsMap" type="store.ifresh.os.fitness.model.entity.OrderItems" >
+    <result column="id" property="id" jdbcType="BIGINT" />
+    <result column="create_time" property="createTime" jdbcType="TIMESTAMP" />
+    <result column="update_time" property="updateTime" jdbcType="TIMESTAMP" />
+    <result column="order_id" property="orderId" jdbcType="BIGINT" />
+    <result column="order_sn" property="orderSn" jdbcType="VARCHAR" />
+    <result column="gym_item_id" property="gymItemId" jdbcType="INTEGER" />
+    <result column="count" property="count" jdbcType="INTEGER" />
+    <result column="gym_item_name" property="gymItemName" jdbcType="VARCHAR" />
+    <result column="price" property="price" jdbcType="BIGINT" />
+    <result column="state" property="state" jdbcType="SMALLINT" />
+    <result column="is_commented" property="isCommented" jdbcType="SMALLINT" />
+    <result column="gym_id" property="gymId" jdbcType="INTEGER" />
+  </resultMap>
+  
+
+  <sql id="Base_Column_List" >
+    id, 
+    create_time,
+    update_time,
+    order_id, 
+    order_sn, 
+    gym_item_id, 
+    count, 
+    gym_item_name, 
+    price, 
+    state, 
+    is_commented, 
+    gym_id
+  </sql>
+  
+  <sql id="Insert_Column_List" >
+    order_id, 
+    order_sn, 
+    gym_item_id, 
+    count, 
+    gym_item_name, 
+    price, 
+    state, 
+    is_commented, 
+    gym_id
+  </sql>
+
+  <select id="selectByPrimaryKey" resultMap="OrderItemsMap" parameterType="java.lang.Long" >
+    select 
+    <include refid="Base_Column_List" />
+    from fit_order_items
+    where id = #{id,jdbcType=BIGINT}
+  </select>
+  
+  <select id="selectByOrderId" resultMap="OrderItemsMap" parameterType="java.lang.Long" >
+    select 
+    <include refid="Base_Column_List" />
+    from fit_order_items
+    where order_id = #{orderId,jdbcType=BIGINT}
+  </select>
+
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Long" >
+    delete from fit_order_items
+    where id = #{id,jdbcType=BIGINT}
+  </delete>
+  
+  <insert id="insertOrderItems" parameterType="store.ifresh.os.fitness.model.entity.OrderItems" useGeneratedKeys="true" keyProperty="id">
+    	insert into fit_order_items (<include refid="Insert_Column_List" />) 
+    	values (
+    		#{orderId,jdbcType=BIGINT,typeHandler=store.ifresh.os.fitness.framework.typehandler.LongNullTypeHandler},
+    		#{orderSn,jdbcType=VARCHAR,typeHandler=store.ifresh.os.fitness.framework.typehandler.StringNullTypeHandler},
+    		#{gymItemId,jdbcType=INTEGER,typeHandler=store.ifresh.os.fitness.framework.typehandler.IntegerNullTypeHandler},
+    		#{count,jdbcType=INTEGER,typeHandler=store.ifresh.os.fitness.framework.typehandler.IntegerNullTypeHandler},
+    		#{gymItemName,jdbcType=VARCHAR,typeHandler=store.ifresh.os.fitness.framework.typehandler.StringNullTypeHandler},
+    		#{price,jdbcType=BIGINT,typeHandler=store.ifresh.os.fitness.framework.typehandler.LongNullTypeHandler},
+    		#{state,jdbcType=SMALLINT,typeHandler=store.ifresh.os.fitness.framework.typehandler.IntegerNullTypeHandler},
+    		#{isCommented,jdbcType=SMALLINT,typeHandler=store.ifresh.os.fitness.framework.typehandler.IntegerNullTypeHandler},
+    		#{gymId,jdbcType=INTEGER,typeHandler=store.ifresh.os.fitness.framework.typehandler.IntegerNullTypeHandler}
+    	)
+  </insert>
+
+  <insert id="insertSelective" parameterType="store.ifresh.os.fitness.model.entity.OrderItems" >
+    insert into fit_order_items
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        id,
+      </if>
+      <if test="orderId != null" >
+        order_id,
+      </if>
+      <if test="orderSn != null" >
+        order_sn,
+      </if>
+      <if test="gymItemId != null" >
+        gym_item_id,
+      </if>
+      <if test="count != null" >
+        count,
+      </if>
+      <if test="gymItemName != null" >
+        gym_item_name,
+      </if>
+      <if test="price != null" >
+        price,
+      </if>
+      <if test="state != null" >
+        state,
+      </if>
+      <if test="isCommented != null" >
+        is_commented,
+      </if>
+      <if test="gymId != null" >
+        gym_id,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        #{id,jdbcType=BIGINT},
+      </if>
+      <if test="orderId != null" >
+        #{orderId,jdbcType=BIGINT},
+      </if>
+      <if test="orderSn != null" >
+        #{orderSn,jdbcType=VARCHAR},
+      </if>
+      <if test="gymItemId != null" >
+        #{gymItemId,jdbcType=INTEGER},
+      </if>
+      <if test="count != null" >
+        #{count,jdbcType=INTEGER},
+      </if>
+      <if test="gymItemName != null" >
+        #{gymItemName,jdbcType=VARCHAR},
+      </if>
+      <if test="price != null" >
+        #{price,jdbcType=BIGINT},
+      </if>
+      <if test="state != null" >
+        #{state,jdbcType=SMALLINT},
+      </if>
+      <if test="isCommented != null" >
+        #{isCommented,jdbcType=SMALLINT},
+      </if>
+      <if test="gymId != null" >
+        #{gymId,jdbcType=INTEGER},
+      </if>
+    </trim>
+  </insert>
+  
+  
+  <update id="updateByPrimaryKeySelective" parameterType="store.ifresh.os.fitness.model.entity.OrderItems" >
+    update fit_order_items
+    <set >
+      <if test="orderId != null" >
+        order_id = #{orderId,jdbcType=BIGINT},
+      </if>
+      <if test="orderSn != null" >
+        order_sn = #{orderSn,jdbcType=VARCHAR},
+      </if>
+      <if test="gymItemId != null" >
+        gym_item_id = #{gymItemId,jdbcType=INTEGER},
+      </if>
+      <if test="count != null" >
+        count = #{count,jdbcType=INTEGER},
+      </if>
+      <if test="gymItemName != null" >
+        gym_item_name = #{gymItemName,jdbcType=VARCHAR},
+      </if>
+      <if test="price != null" >
+        price = #{price,jdbcType=BIGINT},
+      </if>
+      <if test="state != null" >
+        state = #{state,jdbcType=SMALLINT},
+      </if>
+      <if test="isCommented != null" >
+        is_commented = #{isCommented,jdbcType=SMALLINT},
+      </if>
+      <if test="gymId != null" >
+        gym_id = #{gymId,jdbcType=INTEGER},
+      </if>
+    </set>
+    where id = #{id,jdbcType=BIGINT}
+  </update>
+
+  <update id="updateByPrimaryKey" parameterType="store.ifresh.os.fitness.model.entity.OrderItems" >
+    update fit_order_items
+    set order_id = #{orderId,jdbcType=BIGINT},
+      order_sn = #{orderSn,jdbcType=VARCHAR},
+      gym_item_id = #{gymItemId,jdbcType=INTEGER},
+      count = #{count,jdbcType=INTEGER},
+      gym_item_name = #{gymItemName,jdbcType=VARCHAR},
+      price = #{price,jdbcType=BIGINT},
+      state = #{state,jdbcType=SMALLINT},
+      is_commented = #{isCommented,jdbcType=SMALLINT},
+      gym_id = #{gymId,jdbcType=INTEGER}
+    where id = #{id,jdbcType=BIGINT}
+  </update>
+</mapper>

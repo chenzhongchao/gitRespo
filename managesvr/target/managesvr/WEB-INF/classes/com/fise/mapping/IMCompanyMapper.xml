@@ -1,0 +1,68 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper 
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" 
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+
+<mapper namespace="com.fise.mapping.IMCompanyMapper">
+	<resultMap type="com.fise.model.result.Admin" id="admin">
+		<id property="UserName" column="uname"/>
+		<result property="AuthenticCode" column="AuthenticCode"/>
+		<result property="Status" column="status"/>
+	</resultMap>
+	
+	<resultMap type="com.fise.model.result.Admin" id="adminCompany" extends="admin">
+		<collection property="CompanyInfo" ofType="com.fise.model.entity.IMCompany">
+			<id property="UserName" column="uname"/>
+			<result property="AuthenticCode" column="AuthenticCode"/>
+			<result property="CompanyId" column="id"/>
+			<result property="CompanyName" column="CompanyName"/>
+			<result property="CompanyAddr" column="Address"/>
+			<result property="CompanyDescribe" column="CompanyDescribe"/>
+			<result property="CompanyContacts" column="Linkman"/>
+			<result property="Email" column="Email"/>
+		</collection>
+	</resultMap>
+	
+	<insert id="insertCompany" parameterType="com.fise.model.param.IMCompany">
+		insert into 
+		IMCompany 
+		(CompanyName,Address,CompanyDescribe,Linkman,Phone,Email)
+		values 
+		(#{CompanyName},#{CompanyAddr},#{CompanyDescribe},#{CompanyContacts},#{CompanyPhone},#{Email})	
+	</insert>
+	
+	<select id="findcorporates" parameterType="map" resultMap="adminCompany">
+		select p.uname,p.AuthenticCode,m.id,
+			   m.CompanyName,m.Address,m.CompanyDescribe,m.Linkman,m.phone,m.Email 
+		from
+		((select uname,AuthenticCode,company from IMAdmin) p 
+		left join
+		(select id,CompanyName,Address,CompanyDescribe,Linkman,phone,Email from IMCompany) m
+		on p.company=m.CompanyName) 
+		where p.uname=#{UserName} and p.AuthenticCode=#{AuthenticCode} 
+		limit #{Page},#{PageSize}
+	</select>
+	
+	<select id="selectcorporates" parameterType="map" resultMap="adminCompany">	
+		select id,CompanyName,Address,CompanyDescribe,Linkman,phone,Email from IMCompany 
+		where CompanyName like "%"#{CompanyName}"%" 
+		limit #{Page},#{PageSize}
+	</select>
+	
+	<update id="update_corporate" parameterType="com.fise.model.param.IMCompany">
+		update IMCompany 
+		<set>
+			<if test="CompanyName!=null">CompanyName=#{CompanyName},</if>
+			<if test="CompanyAddr!=null">Address=#{CompanyAddr},</if>
+			<if test="CompanyDescribe!=null">CompanyDescribe=#{CompanyDescribe},</if>
+			<if test="CompanyContacts!=null">Linkman=#{CompanyContacts},</if>
+			<if test="CompanyPhone!=null">phone=#{CompanyPhone},</if>
+			<if test="Email!=null">Email=#{Email},</if>		
+		</set>
+		where id=#{CompanyId}
+	</update>
+	
+	<delete id="delete_corporate" parameterType="map">
+		delete from IMCompany where id=#{CompanyId}
+	</delete>
+</mapper>

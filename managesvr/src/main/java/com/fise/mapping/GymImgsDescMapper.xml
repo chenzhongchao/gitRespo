@@ -1,0 +1,68 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="store.ifresh.os.fitness.dao.GymImgsDescMapper">
+	<resultMap id="GymImgsDescMap" type="store.ifresh.os.fitness.model.entity.GymImgsDesc" >
+		<result column="img_id" property="imgId" jdbcType="INTEGER" />
+        <result column="gym_id" property="gymId" jdbcType="INTEGER" />
+        <result column="img_uri" property="imgUri" jdbcType="VARCHAR" />
+        <result column="width" property="width" jdbcType="INTEGER" />
+        <result column="height" property="height" jdbcType="INTEGER" />
+        <result column="txt_desc" property="txtDesc" jdbcType="VARCHAR" />
+		<result column="is_enable" property="isEnable" jdbcType="INTEGER" />
+        <result column="display_order" property="displayOrder" jdbcType="INTEGER" />
+    </resultMap>
+    
+    <sql id="Base_Column_List" >
+    	img_id,
+        gym_id,
+        img_uri,
+        width,
+        height,
+        txt_desc,
+        is_enable,
+        display_order
+    </sql>
+    
+    <sql id="Insert_Column_List" >
+        gym_id,
+        img_uri,
+        width,
+        height,
+        txt_desc,
+        is_enable,
+        display_order
+    </sql>
+    
+	<insert id="insertGymImgsDesc" parameterType="store.ifresh.os.fitness.model.entity.GymImgsDesc" useGeneratedKeys="true" keyProperty="imgId">
+    	insert into fit_gym_imgs_desc (<include refid="Insert_Column_List" />) 
+    	values (
+	    		#{gymId,jdbcType=INTEGER,typeHandler=store.ifresh.os.fitness.framework.typehandler.IntegerNullTypeHandler},
+	    		#{imgUri,jdbcType=VARCHAR,typeHandler=store.ifresh.os.fitness.framework.typehandler.StringNullTypeHandler},
+	    		#{width,jdbcType=INTEGER,typeHandler=store.ifresh.os.fitness.framework.typehandler.IntegerNullTypeHandler},
+	    		#{height,jdbcType=INTEGER,typeHandler=store.ifresh.os.fitness.framework.typehandler.IntegerNullTypeHandler},
+	    		#{txtDesc,jdbcType=VARCHAR,typeHandler=store.ifresh.os.fitness.framework.typehandler.StringNullTypeHandler},
+	    		#{isEnable,jdbcType=INTEGER,typeHandler=store.ifresh.os.fitness.framework.typehandler.IntegerNullTypeHandler},
+	    		#{displayOrder,jdbcType=INTEGER,typeHandler=store.ifresh.os.fitness.framework.typehandler.IntegerNullTypeHandler}
+    	)
+    </insert>    
+    
+    <update id="updateGymImgsDesc" parameterType="store.ifresh.os.fitness.model.entity.GymImgsDesc" >
+        update fit_gym_imgs_desc
+        <set>
+        	<if test="gymId != null"> gym_id = #{gymId,jdbcType=INTEGER}, </if>
+        	<if test="imgUri != null"> img_uri = #{imgUri,jdbcType=VARCHAR}, </if>
+	    	<if test="width != null"> width = #{width,jdbcType=INTEGER}, </if>
+	    	<if test="height != null"> height = #{height,jdbcType=INTEGER}, </if>
+	    	<if test="txtDesc != null"> txt_desc = #{txtDesc,jdbcType=VARCHAR}, </if>
+	    	<if test="isEnable != null"> is_enable = #{isEnable,jdbcType=INTEGER}, </if>
+	    	<if test="displayOrder != null"> display_order = #{displayOrder,jdbcType=INTEGER}, </if>
+        </set> 
+        where img_id = #{imgId,jdbcType=INTEGER}
+    </update>
+    
+	<select id="getGymImgsDescByGymId" parameterType="java.lang.Integer" resultMap="GymImgsDescMap">
+        select <include refid="Base_Column_List" />
+         from fit_gym_imgs_desc where gym_id = #{gymId, jdbcType=INTEGER}
+    </select>
+    
+</mapper>

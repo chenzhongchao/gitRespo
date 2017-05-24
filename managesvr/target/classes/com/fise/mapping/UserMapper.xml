@@ -1,0 +1,55 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper 
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" 
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+
+<mapper namespace="com.fise.mapping.UserMapper">
+  <resultMap type="com.fise.model.entity.UserInfo" id="userinfo">
+  		<id property="Userid" column="id"/>
+  		<result property="UserSex" column="sex"/>
+  		<result property="UserXWNo" column="name"/>
+  		<result property="Usernick" column="nick"/>
+  		<result property="Country" column="country"/>
+  		<result property="Province" column="province"/>
+  		<result property="City" column="city"/>
+  		<result property="Avatar" column="avatar"/>
+  		<result property="Phone" column="phone"/>
+  		<result property="Email" column="email"/>
+  		<result property="Height" column="height"/>
+  		<result property="Weight" column="weight"/>
+  		<result property="Birthday" column="birthday"/>
+  		<result property="Personalized" column="sign_info"/>
+  </resultMap>
+  
+  <resultMap type="com.fise.model.dto.AssociateUser" id="associateUser">
+  		<id property="id" column="id"/>
+  		<result property="name" column="name"/>
+  </resultMap>
+   
+  <resultMap type="com.fise.model.dto.AssociateUser" id="userList" extends="associateUser">
+  		<collection property="useRelation" ofType="com.fise.model.dto.UserRelation">
+  			<result property="smallId" column="smallId"/>
+  			<result property="bigId" column="bigId"/>
+  		</collection>
+  </resultMap>
+  
+  <sql id="sql">id,sex,name,nick,country,province,city,avatar,phone,email,height,weight,birthday,sign_info</sql>
+  
+  <select id="findUserInfo" parameterType="map" resultMap="userinfo">
+  	select<include refid="sql"/>from IMUser where name=#{XWNo} 
+  </select>
+  
+  <select id="findUserById" parameterType="int" resultMap="userinfo">
+  	select<include refid="sql"/>from IMUser where id=#{id}
+  </select>
+  
+  <select id="findUserFriend" parameterType="map" resultMap="userList">
+  	select p.id,m.smallId,m.bigId from
+	((select id,name from IMUser) p 
+	left join
+	(select smallId,bigId from IMRelationShip) m
+	on p.id=m.smallId or p.id=m.bigId) 
+	where name=#{XWNo} 
+	limit #{Page},#{PageSize}
+  </select>
+</mapper>

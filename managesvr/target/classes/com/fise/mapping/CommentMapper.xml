@@ -1,0 +1,491 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="store.ifresh.os.fitness.dao.CommentMapper" >
+  <resultMap id="CommentMap" type="store.ifresh.os.fitness.model.entity.Comment" >
+    <id column="comment_id" property="commentId" jdbcType="BIGINT" />
+    <result column="create_time" property="createTime" jdbcType="TIMESTAMP" />
+    <result column="update_time" property="updateTime" jdbcType="TIMESTAMP" />
+    <result column="order_sn" property="orderSn" jdbcType="VARCHAR" />
+    <result column="gym_id" property="gymId" jdbcType="INTEGER" />
+    <result column="member_id" property="memberId" jdbcType="INTEGER" />
+    <result column="content" property="content" jdbcType="VARCHAR" />
+    <result column="status" property="status" jdbcType="SMALLINT" />
+    <result column="score" property="score" jdbcType="INTEGER" />
+    <result column="is_top" property="isTop" jdbcType="SMALLINT" />
+    <result column="gym_item_id" property="gymItemId" jdbcType="INTEGER" />
+    <result column="order_item_id" property="orderItemId" jdbcType="INTEGER" />
+  </resultMap>
+  
+  <resultMap id="ResultMapWithBLOBs" type="store.ifresh.os.fitness.model.entity.Comment" extends="CommentMap" >
+    <result column="imgs" property="imgs" jdbcType="LONGVARCHAR" />
+  </resultMap>
+  
+  <sql id="Example_Where_Clause" >
+  	<where >
+      <foreach collection="oredCriteria" item="criteria" separator="or" >
+        <if test="criteria.valid" >
+          <trim prefix="(" suffix=")" prefixOverrides="and" >
+            <foreach collection="criteria.criteria" item="criterion" >
+              <choose >
+                <when test="criterion.noValue" >
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue" >
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue" >
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue" >
+                  and ${criterion.condition}
+                  <foreach collection="criterion.value" item="listItem" open="(" close=")" separator="," >
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  
+  <sql id="Update_By_Example_Where_Clause" >
+    <where >
+      <foreach collection="example.oredCriteria" item="criteria" separator="or" >
+        <if test="criteria.valid" >
+          <trim prefix="(" suffix=")" prefixOverrides="and" >
+            <foreach collection="criteria.criteria" item="criterion" >
+              <choose >
+                <when test="criterion.noValue" >
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue" >
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue" >
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue" >
+                  and ${criterion.condition}
+                  <foreach collection="criterion.value" item="listItem" open="(" close=")" separator="," >
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  
+  <sql id="Base_Column_List" >
+    comment_id, 
+    create_time, 
+    update_time, 
+    order_sn, 
+    gym_id, 
+    member_id, 
+    content, 
+    status, 
+    score, 
+    is_top, 
+    gym_item_id, 
+    order_item_id
+  </sql>
+  
+  <sql id="Blob_Column_List" >
+    imgs
+  </sql>
+  
+  <sql id="Insert_Column_List" >
+    order_sn, 
+    gym_id, 
+    member_id, 
+    content, 
+    status, 
+    score, 
+    is_top, 
+    gym_item_id, 
+    order_item_id,
+    imgs
+  </sql>
+
+  <select id="selectByExampleWithBLOBs" resultMap="ResultMapWithBLOBs" parameterType="store.ifresh.os.fitness.model.entity.CommentExample" >
+    select
+    <if test="distinct" >
+      distinct
+    </if>
+    <include refid="Base_Column_List" />
+    ,
+    <include refid="Blob_Column_List" />
+    from fit_comment
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+    <if test="orderByClause != null" >
+      order by ${orderByClause}
+    </if>
+  </select>
+  
+  <select id="selectByExample" resultMap="CommentMap" parameterType="store.ifresh.os.fitness.model.entity.CommentExample" >
+    select
+    <if test="distinct" >
+      distinct
+    </if>
+    <include refid="Base_Column_List" />
+    from fit_comment
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+    <if test="orderByClause != null" >
+      order by ${orderByClause}
+    </if>
+  </select>
+  
+  <select id="selectByPrimaryKey" resultMap="ResultMapWithBLOBs" parameterType="java.lang.Long" >
+    select 
+    <include refid="Base_Column_List" />
+    ,
+    <include refid="Blob_Column_List" />
+    from fit_comment
+    where comment_id = #{commentId,jdbcType=BIGINT}
+  </select>
+  
+  <select id="selectGymComment" resultMap="ResultMapWithBLOBs" parameterType="java.lang.Integer" >
+    select 
+    <include refid="Base_Column_List" />
+    ,
+    <include refid="Blob_Column_List" />
+    from fit_comment
+    where gym_id = #{gymId,jdbcType=INTEGER}
+  </select>
+  
+  <select id="selectAvgScore" resultType="java.lang.Float">
+    select 
+    sum(score) / count(*)
+    from fit_comment
+    where gym_id = #{gymId,jdbcType=INTEGER}
+  </select>
+  
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Long" >
+    delete from fit_comment
+    where comment_id = #{commentId,jdbcType=BIGINT}
+  </delete>
+
+  <delete id="deleteByExample" parameterType="store.ifresh.os.fitness.model.entity.CommentExample" >
+    delete from fit_comment
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+  </delete>
+  
+  <insert id="insertComment" parameterType="store.ifresh.os.fitness.model.entity.Comment" >
+    insert into fit_comment (<include refid="Insert_Column_List" />)
+    values (
+      	#{orderSn,jdbcType=VARCHAR,typeHandler=store.ifresh.os.fitness.framework.typehandler.StringNullTypeHandler}, 
+      	#{gymId,jdbcType=INTEGER,typeHandler=store.ifresh.os.fitness.framework.typehandler.IntegerNullTypeHandler}, 
+      	#{memberId,jdbcType=INTEGER,typeHandler=store.ifresh.os.fitness.framework.typehandler.IntegerNullTypeHandler}, 
+      	#{content,jdbcType=VARCHAR,typeHandler=store.ifresh.os.fitness.framework.typehandler.StringNullTypeHandler}, 
+      	#{status,jdbcType=SMALLINT,typeHandler=store.ifresh.os.fitness.framework.typehandler.IntegerNullTypeHandler}, 
+      	#{score,jdbcType=INTEGER,typeHandler=store.ifresh.os.fitness.framework.typehandler.IntegerNullTypeHandler}, 
+      	#{isTop,jdbcType=SMALLINT,typeHandler=store.ifresh.os.fitness.framework.typehandler.IntegerNullTypeHandler}, 
+      	#{gymItemId,jdbcType=INTEGER,typeHandler=store.ifresh.os.fitness.framework.typehandler.IntegerNullTypeHandler}, 
+      	#{orderItemId,jdbcType=INTEGER,typeHandler=store.ifresh.os.fitness.framework.typehandler.IntegerNullTypeHandler}, 
+      	#{imgs,jdbcType=LONGVARCHAR,typeHandler=store.ifresh.os.fitness.framework.typehandler.StringNullTypeHandler})
+  </insert>
+  
+  <insert id="insert" parameterType="store.ifresh.os.fitness.model.entity.Comment" >
+    insert into fit_comment (
+    	comment_id, 
+    	create_time, 
+    	update_time, 
+      	order_sn, 
+      	gym_id, 
+      	member_id, 
+      	content, 
+      	status, 
+      	score, 
+      	is_top, 
+      	gym_item_id, 
+      	order_item_id, 
+      	imgs
+    )
+    values (
+    	#{commentId,jdbcType=BIGINT}, 
+    	#{createTime,jdbcType=TIMESTAMP}, 
+    	#{updateTime,jdbcType=TIMESTAMP}, 
+      	#{orderSn,jdbcType=VARCHAR}, 
+      	#{gymId,jdbcType=INTEGER}, 
+      	#{memberId,jdbcType=INTEGER}, 
+      	#{content,jdbcType=VARCHAR}, 
+      	#{status,jdbcType=SMALLINT}, 
+      	#{score,jdbcType=INTEGER}, 
+      	#{isTop,jdbcType=SMALLINT}, 
+      	#{gymItemId,jdbcType=INTEGER}, 
+      	#{orderItemId,jdbcType=INTEGER}, 
+      	#{imgs,jdbcType=LONGVARCHAR})
+  </insert>
+  
+  <insert id="insertSelective" parameterType="store.ifresh.os.fitness.model.entity.Comment" >
+    insert into fit_comment
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="commentId != null" >
+        comment_id,
+      </if>
+      <if test="createTime != null" >
+        create_time,
+      </if>
+      <if test="updateTime != null" >
+        update_time,
+      </if>
+      <if test="orderSn != null" >
+        order_sn,
+      </if>
+      <if test="gymId != null" >
+        gym_id,
+      </if>
+      <if test="memberId != null" >
+        member_id,
+      </if>
+      <if test="content != null" >
+        content,
+      </if>
+      <if test="status != null" >
+        status,
+      </if>
+      <if test="score != null" >
+        score,
+      </if>
+      <if test="isTop != null" >
+        is_top,
+      </if>
+      <if test="gymItemId != null" >
+        gym_item_id,
+      </if>
+      <if test="orderItemId != null" >
+        order_item_id,
+      </if>
+      <if test="imgs != null" >
+        imgs,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="commentId != null" >
+        #{commentId,jdbcType=BIGINT},
+      </if>
+      <if test="createTime != null" >
+        #{createTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="updateTime != null" >
+        #{updateTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="orderSn != null" >
+        #{orderSn,jdbcType=VARCHAR},
+      </if>
+      <if test="gymId != null" >
+        #{gymId,jdbcType=INTEGER},
+      </if>
+      <if test="memberId != null" >
+        #{memberId,jdbcType=INTEGER},
+      </if>
+      <if test="content != null" >
+        #{content,jdbcType=VARCHAR},
+      </if>
+      <if test="status != null" >
+        #{status,jdbcType=SMALLINT},
+      </if>
+      <if test="score != null" >
+        #{score,jdbcType=INTEGER},
+      </if>
+      <if test="isTop != null" >
+        #{isTop,jdbcType=SMALLINT},
+      </if>
+      <if test="gymItemId != null" >
+        #{gymItemId,jdbcType=INTEGER},
+      </if>
+      <if test="orderItemId != null" >
+        #{orderItemId,jdbcType=INTEGER},
+      </if>
+      <if test="imgs != null" >
+        #{imgs,jdbcType=LONGVARCHAR},
+      </if>
+    </trim>
+  </insert>
+  
+  <select id="countByExample" parameterType="store.ifresh.os.fitness.model.entity.CommentExample" resultType="java.lang.Integer" >
+    select count(*) from fit_comment
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+  </select>
+  
+  <update id="updateByExampleSelective" parameterType="map" >
+    update fit_comment
+    <set >
+      <if test="record.commentId != null" >
+        comment_id = #{record.commentId,jdbcType=BIGINT},
+      </if>
+      <if test="record.createTime != null" >
+        create_time = #{record.createTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="record.updateTime != null" >
+        update_time = #{record.updateTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="record.orderSn != null" >
+        order_sn = #{record.orderSn,jdbcType=VARCHAR},
+      </if>
+      <if test="record.gymId != null" >
+        gym_id = #{record.gymId,jdbcType=INTEGER},
+      </if>
+      <if test="record.memberId != null" >
+        member_id = #{record.memberId,jdbcType=INTEGER},
+      </if>
+      <if test="record.content != null" >
+        content = #{record.content,jdbcType=VARCHAR},
+      </if>
+      <if test="record.status != null" >
+        status = #{record.status,jdbcType=SMALLINT},
+      </if>
+      <if test="record.score != null" >
+        score = #{record.score,jdbcType=INTEGER},
+      </if>
+      <if test="record.isTop != null" >
+        is_top = #{record.isTop,jdbcType=SMALLINT},
+      </if>
+      <if test="record.gymItemId != null" >
+        gym_item_id = #{record.gymItemId,jdbcType=INTEGER},
+      </if>
+      <if test="record.orderItemId != null" >
+        order_item_id = #{record.orderItemId,jdbcType=INTEGER},
+      </if>
+      <if test="record.imgs != null" >
+        imgs = #{record.imgs,jdbcType=LONGVARCHAR},
+      </if>
+    </set>
+    <if test="_parameter != null" >
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  
+  <update id="updateByExampleWithBLOBs" parameterType="map" >
+    update fit_comment
+    set 
+    	comment_id = #{record.commentId,jdbcType=BIGINT},
+      	create_time = #{record.createTime,jdbcType=TIMESTAMP},
+      	update_time = #{record.updateTime,jdbcType=TIMESTAMP},
+     	order_sn = #{record.orderSn,jdbcType=VARCHAR},
+      	gym_id = #{record.gymId,jdbcType=INTEGER},
+      	member_id = #{record.memberId,jdbcType=INTEGER},
+      	content = #{record.content,jdbcType=VARCHAR},
+      	status = #{record.status,jdbcType=SMALLINT},
+      	score = #{record.score,jdbcType=INTEGER},
+      	is_top = #{record.isTop,jdbcType=SMALLINT},
+      	gym_item_id = #{record.gymItemId,jdbcType=INTEGER},
+      	order_item_id = #{record.orderItemId,jdbcType=INTEGER},
+      	imgs = #{record.imgs,jdbcType=LONGVARCHAR}
+    <if test="_parameter != null" >
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  
+  <update id="updateByExample" parameterType="map" >
+    update fit_comment
+    set 
+    	comment_id = #{record.commentId,jdbcType=BIGINT},
+      	create_time = #{record.createTime,jdbcType=TIMESTAMP},
+      	update_time = #{record.updateTime,jdbcType=TIMESTAMP},
+      	order_sn = #{record.orderSn,jdbcType=VARCHAR},
+      	gym_id = #{record.gymId,jdbcType=INTEGER},
+      	member_id = #{record.memberId,jdbcType=INTEGER},
+      	content = #{record.content,jdbcType=VARCHAR},
+      	status = #{record.status,jdbcType=SMALLINT},
+      	score = #{record.score,jdbcType=INTEGER},
+      	is_top = #{record.isTop,jdbcType=SMALLINT},
+      	gym_item_id = #{record.gymItemId,jdbcType=INTEGER},
+      	order_item_id = #{record.orderItemId,jdbcType=INTEGER}
+    <if test="_parameter != null" >
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  
+  <update id="updateByPrimaryKeySelective" parameterType="store.ifresh.os.fitness.model.entity.Comment" >
+    update fit_comment
+    <set >
+      <if test="createTime != null" >
+        create_time = #{createTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="updateTime != null" >
+        update_time = #{updateTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="orderSn != null" >
+        order_sn = #{orderSn,jdbcType=BIGINT},
+      </if>
+      <if test="gymId != null" >
+        gym_id = #{gymId,jdbcType=INTEGER},
+      </if>
+      <if test="memberId != null" >
+        member_id = #{memberId,jdbcType=INTEGER},
+      </if>
+      <if test="content != null" >
+        content = #{content,jdbcType=VARCHAR},
+      </if>
+      <if test="status != null" >
+        status = #{status,jdbcType=SMALLINT},
+      </if>
+      <if test="score != null" >
+        score = #{score,jdbcType=INTEGER},
+      </if>
+      <if test="isTop != null" >
+        is_top = #{isTop,jdbcType=SMALLINT},
+      </if>
+      <if test="gymItemId != null" >
+        gym_item_id = #{gymItemId,jdbcType=INTEGER},
+      </if>
+      <if test="orderItemId != null" >
+        order_item_id = #{orderItemId,jdbcType=INTEGER},
+      </if>
+      <if test="imgs != null" >
+        imgs = #{imgs,jdbcType=LONGVARCHAR},
+      </if>
+    </set>
+    where comment_id = #{commentId,jdbcType=BIGINT}
+  </update>
+  
+  <update id="updateByPrimaryKeyWithBLOBs" parameterType="store.ifresh.os.fitness.model.entity.Comment" >
+    update fit_comment
+    set 
+    	create_time = #{createTime,jdbcType=TIMESTAMP},
+      	update_time = #{updateTime,jdbcType=TIMESTAMP},
+      	order_sn = #{orderSn,jdbcType=VARCHAR},
+      	gym_id = #{gymId,jdbcType=INTEGER},
+      	member_id = #{memberId,jdbcType=INTEGER},
+      	content = #{content,jdbcType=VARCHAR},
+      	status = #{status,jdbcType=SMALLINT},
+      	score = #{score,jdbcType=INTEGER},
+      	is_top = #{isTop,jdbcType=SMALLINT},
+      	gym_item_id = #{gymItemId,jdbcType=INTEGER},
+      	order_item_id = #{orderItemId,jdbcType=INTEGER},
+      	imgs = #{imgs,jdbcType=LONGVARCHAR}
+    where comment_id = #{commentId,jdbcType=BIGINT}
+  </update>
+  
+  <update id="updateByPrimaryKey" parameterType="store.ifresh.os.fitness.model.entity.Comment" >
+    update fit_comment
+    set 
+    	create_time = #{createTime,jdbcType=TIMESTAMP},
+      	update_time = #{updateTime,jdbcType=TIMESTAMP},
+      	order_sn = #{orderSn,jdbcType=VARCHAR},
+      	gym_id = #{gymId,jdbcType=INTEGER},
+      	member_id = #{memberId,jdbcType=INTEGER},
+      	content = #{content,jdbcType=VARCHAR},
+      	status = #{status,jdbcType=SMALLINT},
+      	score = #{score,jdbcType=INTEGER},
+      	is_top = #{isTop,jdbcType=SMALLINT},
+      	gym_item_id = #{gymItemId,jdbcType=INTEGER},
+      	order_item_id = #{orderItemId,jdbcType=INTEGER}
+    where comment_id = #{commentId,jdbcType=BIGINT}
+  </update>
+  
+</mapper>

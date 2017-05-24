@@ -1,0 +1,111 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" 
+	xmlns:p="http://www.springframework.org/schema/p"
+	xmlns:context="http://www.springframework.org/schema/context"
+	xmlns:mvc="http://www.springframework.org/schema/mvc"
+	xmlns:aop="http://www.springframework.org/schema/aop"
+	xmlns:tx="http://www.springframework.org/schema/tx"
+	xsi:schemaLocation="http://www.springframework.org/schema/beans 
+						http://www.springframework.org/schema/beans/spring-beans-4.0.xsd  
+                        http://www.springframework.org/schema/context 
+                        http://www.springframework.org/schema/context/spring-context-4.0.xsd  
+                        http://www.springframework.org/schema/mvc 
+                        http://www.springframework.org/schema/mvc/spring-mvc-4.0.xsd
+                        http://www.springframework.org/schema/aop 
+                        http://www.springframework.org/schema/aop/spring-aop-4.0.xsd
+                        http://www.springframework.org/schema/tx 
+                        http://www.springframework.org/schema/tx/spring-tx-4.0.xsd">
+	<!-- 引入配置文件 -->
+	
+	<bean id="propertyConfigurer"
+		class="org.springframework.beans.factory.config.PropertyPlaceholderConfigurer">
+		<property name="location" value="classpath:jdbc.properties" />
+	</bean>
+	
+	<bean id="dataSource" class="org.apache.commons.dbcp.BasicDataSource"
+		destroy-method="close">
+		<property name="driverClassName" value="${jdbc.driver}" />
+		<property name="url" value="${jdbc.url}" />
+		<property name="username" value="${jdbc.username}" />
+		<property name="password" value="${jdbc.password}" />
+		<!-- 初始化连接大小 -->
+		<property name="initialSize" value="${jdbc.initialSize}" />
+		<!-- 连接池最大数量 -->
+		<property name="maxActive" value="${jdbc.maxActive}" />
+		<!-- 连接池最大空闲 -->
+		<property name="maxIdle" value="${jdbc.maxIdle}" />
+		<!-- 连接池最小空闲 -->
+		<property name="minIdle" value="${jdbc.minIdle}" />
+		<!-- 获取连接最大等待时间 -->
+		<property name="maxWait" value="${jdbc.maxWait}" />
+		<!-- 空闲连接回收器扫描间隔，此处设置1000 * 60 * 60毫秒,即1小时 -->
+		<property name="timeBetweenEvictionRunsMillis" value="3600000" />
+		<!-- 空闲连接回收器回收阀值，此处设置1000 * 60 * 60 * 4毫秒，即4小时 -->
+		<property name="minEvictableIdleTimeMillis" value="14400000" />
+	</bean>
+	
+	<!-- spring和MyBatis完美整合，不需要mybatis的配置映射文件 -->
+	<bean id="sqlSessionFactory" class="org.mybatis.spring.SqlSessionFactoryBean">
+		<property name="dataSource" ref="dataSource" />
+		<!-- 自动扫描mapping.xml文件 -->
+		<property name="mapperLocations" value="classpath*:com/fise/mapping/*.xml" />
+		<property name="typeAliasesPackage" value="com.fise.model.entity" />
+		<property name="plugins">  
+	        <array>
+		        <bean class="com.fise.framework.interceptor.PageInterceptor">  
+		        	<property name="databaseType" value="mysql" />
+		        </bean>  
+	        </array>
+	    </property>
+		
+		<!-- 自定义处理DB中not null字段与java中属性默认null的typeHandler -->
+		<property name="typeHandlersPackage" value="com.fise.framework.typehandler" />
+	</bean>
+
+	<!-- DAO接口所在包名，Spring会自动查找其下的类 -->
+	<bean class="org.mybatis.spring.mapper.MapperScannerConfigurer">
+		<!-- 
+		<property name="basePackage" value="store.ifresh.os.fitness.shortenurl.dao"/>
+		 -->
+		<property name="basePackage" value="com.fise.dao"/>
+		<property name="sqlSessionFactoryBeanName" value="sqlSessionFactory"></property>
+	</bean>
+
+
+	<!-- (事务管理)transaction manager, use JtaTransactionManager for global tx -->
+	<!-- 所有service目录中的实现类，如果要加入事务管理，必须已下面的关键字开头 -->
+	<bean id="transactionManager"
+		class="org.springframework.jdbc.datasource.DataSourceTransactionManager">
+		<property name="dataSource" ref="dataSource" />
+	</bean>
+	<tx:advice id="txAdvice" transaction-manager="transactionManager">
+		<tx:attributes>
+			<tx:method name="regis*" propagation="REQUIRED" rollback-for="java.lang.Exception" />
+			<tx:method name="save*" propagation="REQUIRED" rollback-for="java.lang.Exception" />
+			<tx:method name="batch*" propagation="REQUIRED" rollback-for="java.lang.Exception" />
+			<tx:method name="create*" propagation="REQUIRED" rollback-for="java.lang.Exception" />
+			<tx:method name="post*" propagation="REQUIRED" rollback-for="java.lang.Exception" />
+			<tx:method name="insert*" propagation="REQUIRED" rollback-for="java.lang.Exception" />
+			<tx:method name="settle*" propagation="REQUIRED" rollback-for="java.lang.Exception" />
+			<tx:method name="build*" propagation="REQUIRED" rollback-for="java.lang.Exception" />
+			<tx:method name="add*" propagation="REQUIRED" rollback-for="java.lang.Exception" />
+			<tx:method name="update*" propagation="REQUIRED" rollback-for="java.lang.Exception" />
+			<tx:method name="edit*" propagation="REQUIRED" rollback-for="java.lang.Exception" />
+			<tx:method name="del*" propagation="REQUIRED" rollback-for="java.lang.Exception" />
+			<tx:method name="remove*" propagation="REQUIRED" rollback-for="java.lang.Exception" />
+			<tx:method name="init*" propagation="REQUIRED" rollback-for="java.lang.Exception" />
+			<tx:method name="upload*" propagation="REQUIRED" rollback-for="java.lang.Exception" />
+			<tx:method name="gernate*" propagation="REQUIRES_NEW" rollback-for="java.lang.Exception" />
+			
+    		
+    		<tx:method name="*" read-only="true"/>
+		</tx:attributes>
+	</tx:advice>
+	<!-- 定义切面 -->
+	<aop:config proxy-target-class="true">
+		<aop:pointcut id="interceptorPointCuts"
+			expression="execution(* com.fise.service..*.*(..))" />
+		<aop:advisor advice-ref="txAdvice" pointcut-ref="interceptorPointCuts" />
+	</aop:config>
+</beans>

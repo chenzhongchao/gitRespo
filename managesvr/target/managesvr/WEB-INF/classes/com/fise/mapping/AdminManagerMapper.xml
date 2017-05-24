@@ -1,0 +1,81 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper 
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" 
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+
+<mapper namespace="com.fise.mapping.AdminManagerMapper">	
+	<resultMap type="com.fise.model.dto.AuthDirInfo" id="authdirinfo">
+		<id property="SubFunId" column="id"/>
+		<result property="SubFunName" column="AuthName"/>
+		<result property="AuthDirId" column="fid"/>
+	</resultMap>
+	
+	<resultMap type="com.fise.model.entity.AdminInfo" id="adminInfo">
+		<id property="AdminId" column="id"/>
+		<result property="RoleLevel" column="userlevel"/>
+		<result property="UserName" column="uname"/>
+		<result property="UserPd" column="pwd"/>
+		<result property="UserNick" column="nickname"/>
+		<result property="UserCompany" column="company"/>
+		<result property="LinkMan" column="linkman"/>
+		<result property="LinkPhone" column="phone"/>
+		<result property="Email" column="email"/>	
+	</resultMap>
+	
+	
+	
+	<sql id="sql">departid,uname,pwd,nickname,company,linkman,phone,email</sql>
+	
+	<sql id="sql1">id,userlevel,uname,pwd,nickname,company,linkman,phone,email</sql>
+	
+	<insert id="insert_Admin" parameterType="cn.itcast.ssm.domain.AddAdmin">
+		insert into IMAdmin 
+		(<include refid="sql"/>) 
+		values 
+		(#{DepartId},#{NewUserName},#{NewUserPd},#{NewUserNick},#{NewUserCompany},#{LinkMan},#{LinkPhone},#{Email})
+	</insert>
+	
+	<select id="getCompanyAuth" parameterType="int" resultMap="authdirinfo">
+		select m.id,m.AuthName,m.fid
+		from
+		((select authorityid from IMCompanyAuth where companyid=#{DepartId}) p
+		left join
+		(select id,AuthName,fid from IMUserAuthority) m
+		on p.authorityid=m.id) 
+	</select>
+	
+	<select id="queryAdmin" parameterType="java.lang.String" resultType="int">
+		select id from IMAdmin where uname=#{NewUserName}
+	</select>
+	
+	<update id="update_Admin" parameterType="com.fise.model.param.AddAdmin">
+		update IMAdmin 
+		<set>
+			<if test="NewUserName!=null">uname=#{NewUserName}</if>
+			<if test="NewUserPd!=null">pwd=#{NewUserPd}</if>
+			<if test="NewUserNick!=null">nickname=#{NewUserNick}</if>
+			<if test="NewUserCompany!=null">company=#{NewUserCompany}</if>
+			<if test="LinkMan!=null">linkman=#{LinkMan}</if>
+			<if test="LinkPhone!=null">phone=#{LinkPhone}</if>
+			<if test="Email!=null">email=#{Email}</if>
+		</set>
+		where id=#{AdminId}
+	</update> 
+	
+	<delete id="delete_Admin" parameterType="int">
+		delete from IMAdmin where id=#{AdminId}
+	</delete>
+	
+	<select id="getAdminInfo" resultMap="adminInfo">
+		select<include refid="sql1"/>from IMAdmin
+	</select>
+	
+	<select id="GetAdminAuthInfo" parameterType="int" resultMap="authdirinfo">
+		select m.fid,m.AuthName,m.id
+		from
+		((select authid from IMAdminAuth where userid=#{UserId}) p
+		left join
+		(select fid,AuthName,id from IMUserAuthority) m 
+		on p.authid=m.id)
+	</select>
+</mapper>

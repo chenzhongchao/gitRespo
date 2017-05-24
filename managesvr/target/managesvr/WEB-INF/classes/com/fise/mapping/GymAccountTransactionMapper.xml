@@ -1,0 +1,153 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="store.ifresh.os.fitness.dao.GymAccountTransactionMapper" >
+  <resultMap id="GymAccountTransactionMap" type="store.ifresh.os.fitness.model.entity.GymAccountTransaction" >
+    <result column="trans_id" property="transId" jdbcType="INTEGER" />
+    <result column="create_time" property="createTime" jdbcType="TIMESTAMP" />
+    <result column="update_time" property="updateTime" jdbcType="TIMESTAMP" />
+    <result column="trans_no" property="transNo" jdbcType="VARCHAR" />
+    <result column="gym_id" property="gymId" jdbcType="INTEGER" />
+    <result column="order_id" property="orderId" jdbcType="INTEGER" />
+    <result column="operate_type" property="operateType" jdbcType="TINYINT" />
+    <result column="pay_method" property="payMethod" jdbcType="TINYINT" />
+    <result column="amount" property="amount" jdbcType="BIGINT" />
+    <result column="pre_balance" property="preBalance" jdbcType="BIGINT" />
+    <result column="post_balance" property="postBalance" jdbcType="BIGINT" />
+    <result column="thirdparty_payment_account" property="thirdpartyPaymentAccount" jdbcType="VARCHAR" />
+    <result column="thirdparty_payment_name" property="thirdpartyPaymentName" jdbcType="VARCHAR" />
+    <result column="bank_name" property="bankName" jdbcType="VARCHAR" />
+    <result column="bank_address" property="bankAddress" jdbcType="VARCHAR" />
+    <result column="bank_code" property="bankCode" jdbcType="VARCHAR" />
+    <result column="bank_card_no" property="bankCardNo" jdbcType="VARCHAR" />
+    <result column="bank_card_name" property="bankCardName" jdbcType="VARCHAR" />
+    <result column="withdraw_deposit_remark" property="withdrawDepositRemark" jdbcType="VARCHAR" />
+    <result column="refund_amount" property="refundAmount" jdbcType="BIGINT" />
+    <result column="state" property="state" jdbcType="TINYINT" />
+  </resultMap>
+  
+  <sql id="Base_Column_List" >
+    trans_id, 
+    create_time, 
+    update_time, 
+    trans_no, 
+    gym_id, 
+    order_id, 
+    operate_type, 
+    pay_method, 
+    amount, 
+    pre_balance, 
+    post_balance, 
+    thirdparty_payment_account, 
+    thirdparty_payment_name, 
+    bank_name, 
+    bank_address, 
+    bank_code, 
+    bank_card_no, 
+    bank_card_name, 
+    withdraw_deposit_remark, 
+    refund_amount, 
+    state
+  </sql>
+  
+  <sql id="Insert_Column_List" >
+    trans_no, 
+    gym_id, 
+    order_id, 
+    operate_type, 
+    pay_method, 
+    amount, 
+    pre_balance, 
+    post_balance, 
+    thirdparty_payment_account, 
+    thirdparty_payment_name, 
+    bank_name, 
+    bank_address, 
+    bank_code, 
+    bank_card_no, 
+    bank_card_name, 
+    withdraw_deposit_remark, 
+    refund_amount, 
+    state
+  </sql>
+  
+  
+  <insert id="insertGymAccountTransaction" parameterType="store.ifresh.os.fitness.model.entity.GymAccountTransaction" >
+    insert into fit_gym_account_transaction (<include refid="Insert_Column_List"/>)
+    values ( 
+    	#{transNo,jdbcType=VARCHAR,typeHandler=store.ifresh.os.fitness.framework.typehandler.StringNullTypeHandler},
+      	#{gymId,jdbcType=INTEGER,typeHandler=store.ifresh.os.fitness.framework.typehandler.IntegerNullTypeHandler},
+      	#{orderId,jdbcType=BIGINT,typeHandler=store.ifresh.os.fitness.framework.typehandler.LongNullTypeHandler},
+      	#{operateType,jdbcType=SMALLINT,typeHandler=store.ifresh.os.fitness.framework.typehandler.IntegerNullTypeHandler}, 
+      	#{payMethod,jdbcType=SMALLINT,typeHandler=store.ifresh.os.fitness.framework.typehandler.IntegerNullTypeHandler},
+      	#{amount,jdbcType=BIGINT,typeHandler=store.ifresh.os.fitness.framework.typehandler.LongNullTypeHandler},
+      	#{preBalance,jdbcType=BIGINT,typeHandler=store.ifresh.os.fitness.framework.typehandler.LongNullTypeHandler},
+      	#{postBalance,jdbcType=BIGINT,typeHandler=store.ifresh.os.fitness.framework.typehandler.LongNullTypeHandler},
+      	#{thirdpartyPaymentAccount,jdbcType=VARCHAR,typeHandler=store.ifresh.os.fitness.framework.typehandler.StringNullTypeHandler},
+      	#{thirdpartyPaymentName,jdbcType=VARCHAR,typeHandler=store.ifresh.os.fitness.framework.typehandler.StringNullTypeHandler},
+      	#{bankName,jdbcType=VARCHAR,typeHandler=store.ifresh.os.fitness.framework.typehandler.StringNullTypeHandler},
+      	#{bankAddress,jdbcType=VARCHAR,typeHandler=store.ifresh.os.fitness.framework.typehandler.StringNullTypeHandler},
+      	#{bankCode,jdbcType=VARCHAR,typeHandler=store.ifresh.os.fitness.framework.typehandler.StringNullTypeHandler},
+      	#{bankCardNo,jdbcType=VARCHAR,typeHandler=store.ifresh.os.fitness.framework.typehandler.StringNullTypeHandler},
+      	#{bankCardName,jdbcType=VARCHAR,typeHandler=store.ifresh.os.fitness.framework.typehandler.StringNullTypeHandler},
+      	#{withdrawDepositRemark,jdbcType=VARCHAR,typeHandler=store.ifresh.os.fitness.framework.typehandler.StringNullTypeHandler},
+      	#{refundAmount,jdbcType=BIGINT,typeHandler=store.ifresh.os.fitness.framework.typehandler.LongNullTypeHandler},
+      	#{state,jdbcType=SMALLINT,typeHandler=store.ifresh.os.fitness.framework.typehandler.IntegerNullTypeHandler}
+      )
+  </insert>
+  
+  
+  <select id="selectByPrimaryKey" resultMap="GymAccountTransactionMap" parameterType="java.lang.Integer" >
+    select 
+    <include refid="Base_Column_List" />
+    from fit_gym_account_transaction
+    where trans_id = #{transId,jdbcType=INTEGER}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer" >
+    delete from fit_gym_account_transaction
+    where trans_id = #{transId,jdbcType=INTEGER}
+  </delete>
+  
+  <insert id="insert" parameterType="store.ifresh.os.fitness.model.entity.GymAccountTransaction" >
+    insert into fit_gym_account_transaction (trans_id, create_time, update_time, 
+      trans_no, gym_id, order_id, 
+      operate_type, pay_method, amount, 
+      pre_balance, post_balance, thirdparty_payment_account, 
+      thirdparty_payment_name, bank_name, bank_address, 
+      bank_code, bank_card_no, bank_card_name, 
+      withdraw_deposit_remark, refund_amount, state
+      )
+    values (#{transId,jdbcType=INTEGER}, #{createTime,jdbcType=TIMESTAMP}, #{updateTime,jdbcType=TIMESTAMP}, 
+      #{transNo,jdbcType=VARCHAR}, #{gymId,jdbcType=INTEGER}, #{orderId,jdbcType=INTEGER}, 
+      #{operateType,jdbcType=TINYINT}, #{payMethod,jdbcType=TINYINT}, #{amount,jdbcType=BIGINT}, 
+      #{preBalance,jdbcType=BIGINT}, #{postBalance,jdbcType=BIGINT}, #{thirdpartyPaymentAccount,jdbcType=VARCHAR}, 
+      #{thirdpartyPaymentName,jdbcType=VARCHAR}, #{bankName,jdbcType=VARCHAR}, #{bankAddress,jdbcType=VARCHAR}, 
+      #{bankCode,jdbcType=VARCHAR}, #{bankCardNo,jdbcType=VARCHAR}, #{bankCardName,jdbcType=VARCHAR}, 
+      #{withdrawDepositRemark,jdbcType=VARCHAR}, #{refundAmount,jdbcType=BIGINT}, #{state,jdbcType=TINYINT}
+      )
+  </insert>
+  
+  <update id="updateByPrimaryKey" parameterType="store.ifresh.os.fitness.model.entity.GymAccountTransaction" >
+    update fit_gym_account_transaction
+    set create_time = #{createTime,jdbcType=TIMESTAMP},
+      update_time = #{updateTime,jdbcType=TIMESTAMP},
+      trans_no = #{transNo,jdbcType=VARCHAR},
+      gym_id = #{gymId,jdbcType=INTEGER},
+      order_id = #{orderId,jdbcType=INTEGER},
+      operate_type = #{operateType,jdbcType=TINYINT},
+      pay_method = #{payMethod,jdbcType=TINYINT},
+      amount = #{amount,jdbcType=BIGINT},
+      pre_balance = #{preBalance,jdbcType=BIGINT},
+      post_balance = #{postBalance,jdbcType=BIGINT},
+      thirdparty_payment_account = #{thirdpartyPaymentAccount,jdbcType=VARCHAR},
+      thirdparty_payment_name = #{thirdpartyPaymentName,jdbcType=VARCHAR},
+      bank_name = #{bankName,jdbcType=VARCHAR},
+      bank_address = #{bankAddress,jdbcType=VARCHAR},
+      bank_code = #{bankCode,jdbcType=VARCHAR},
+      bank_card_no = #{bankCardNo,jdbcType=VARCHAR},
+      bank_card_name = #{bankCardName,jdbcType=VARCHAR},
+      withdraw_deposit_remark = #{withdrawDepositRemark,jdbcType=VARCHAR},
+      refund_amount = #{refundAmount,jdbcType=BIGINT},
+      state = #{state,jdbcType=TINYINT}
+    where trans_id = #{transId,jdbcType=INTEGER}
+  </update>
+</mapper>

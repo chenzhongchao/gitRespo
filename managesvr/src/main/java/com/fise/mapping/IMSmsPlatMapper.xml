@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper 
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" 
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+
+<mapper namespace="com.fise.mapping.IMSmsPlatMapper">
+
+	<resultMap type="com.fise.model.result.SmsInfo" id="smsinfo">
+		<id property="SmsPlatFromId" column="id"/>
+		<result property="SmsPlatFromName" column="platfrom_name"/>
+		<result property="SmsPlatFromConf" column="config"/>
+		<result property="SmsPlatFromStatus" column="status"/>
+	</resultMap>
+	
+	<sql id="sql">id,platfrom_name,config,status</sql>
+	
+	<insert id="insert_user" parameterType="com.fise.model.result.SmsInfo">
+		insert into IMSmsPlatfrom 
+		(platfrom_name,config,status) 
+		values 
+		(#{SmsPlatFromName},#{SmsPlatFromConf},#{SmsPlatFromStatus})
+	</insert>
+	
+	<delete id="delete_user" parameterType="map">
+		delete from IMSmsPlatfrom 
+		where id=#{SmsPlatFromId}
+	</delete>
+	
+	<update id="update_user" parameterType="com.fise.model.result.SmsInfo">
+		update IMSmsPlatfrom 
+		<set>
+			<if test="SmsPlatFromName!=null">platfrom_name=#{SmsPlatFromName},</if>
+			<if test="SmsPlatFromConf!=null">config=#{SmsPlatFromConf},</if>
+			<if test="SmsPlatFromStatus!=null">status=#{SmsPlatFromStatus},</if>
+		</set>
+		where id=#{SmsPlatFromId}
+	</update>
+	
+	<select id="queryAllSmsPlat" resultMap="smsinfo">
+		select<include refid="sql"/>from IMSmsPlatfrom
+	</select>
+</mapper>

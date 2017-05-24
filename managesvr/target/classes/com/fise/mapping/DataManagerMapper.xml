@@ -1,0 +1,70 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper 
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" 
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+
+<mapper namespace="com.fise.mapping.DataManagerMapper">
+	<resultMap type="com.fise.model.dto.Devices" id="DeviceCountInfo">
+		<result property="OnlineDevice" column="OnlineDevice"/>
+		<result property="ActiveDevice" column="ActiveDevice"/>
+	</resultMap>
+	
+	<resultMap type="com.fise.model.dto.XWInfo" id="XWinfo">
+		<result property="OnlineXW" column="OnlineXW"/>
+		<result property="RegisterXW" column="RegisterXW"/>
+	</resultMap>
+	
+	<resultMap type="com.fise.model.dto.ClientTypeCount" id="ClientTypeCount">
+		<result property="TypeName" column="type"/>
+		<result property="RegisterCount" column="RegisterCount"/>
+	</resultMap>
+	
+	<resultMap type="com.fise.model.dto.ClientPlaceCount" id="ClientPlaceCount">
+		<result property="addressName" column="province"/>
+		<result property="RegisterCount" column="RegisterCount"/>
+	</resultMap>
+	
+	<resultMap type="com.fise.model.dto.Register" id="register">
+		<result property="Days" column="days"/>
+		<result property="RegisterCount" column="RegisterCount"/>
+	</resultMap>
+	
+	<select id="selectActiveDeviceCount" parameterType="int" resultMap="DeviceCountInfo">
+		select p.departId,p.ActiveDevice,m.OnlineDevice 
+		from
+		((select departId,count(status) as ActiveDevice from FiseDevice where status=1 group by departId) p
+		left join
+		(select departId,count(online_status) as OnlineDevice from IMUser where online_status=1 and type>=19 group by departId) m
+		on p.departId=m.departId) where p.departId=#{departId}
+	</select>
+	
+	<select id="selectXWCount" parameterType="int" resultMap="XWinfo">
+		select p.departId,p.RegisterXW,m.OnlineXW 
+		from
+		((select departId,count(status) as RegisterXW from FiseDevice where status=1 group by departId) p
+		left join
+		(select departId,count(online_status) as OnlineXW from IMUser where online_status=1 and type &lt;19 group by departId) m
+		on p.departId=m.departId) where p.departId=#{departId}
+	</select>
+	
+	<select id="findTypeCount" parameterType="int" resultMap="ClientTypeCount">
+		select type,count(online_status) as RegisterCount from IMUser where departId=#{DepartId} and type &lt;19 group by type
+	</select>
+	
+	<select id="findPlaceCount" parameterType="int" resultMap="ClientPlaceCount">
+		select province,count(online_status) as RegisterCount from IMUser where departId=#{DepartId} group by province
+	</select>
+	
+	<select id="findAllCount" parameterType="int" resultType="int">
+		select count(id) from IMUser where departId=#{DepartId}
+	</select>
+	
+	<select id="getRegisterCount" parameterType="com.fise.model.param.RegisterTime" resultMap="register">
+		select from_unixtime(created,'%y-%m-%d') as days,count(id) as RegisterCount 
+		from IMUser 
+		where created between unix_timestamp(#{StartTime}) and unix_timestamp(#{EndTime}) 
+		and type&lt;19 and departId=#{DepartId}
+		group by days
+	</select>
+	
+</mapper>

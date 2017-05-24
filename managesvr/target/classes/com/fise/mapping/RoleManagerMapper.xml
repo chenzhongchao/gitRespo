@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper 
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" 
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+
+<mapper namespace="com.fise.mapping.RoleManagerMapper">
+
+	<resultMap type="com.fise.model.dto.RoleInfo" id="roleinfo">
+		<id property="RoleId" column="id"/>
+		<result property="RoleName" column="RoleName"/>
+		<result property="RoleLevel" column="RoleLevel"/>
+		<result property="RoleDescribe" column="RoleDescribe"/>
+	</resultMap>
+	
+	<insert id="insert_RoleInfo" parameterType="com.fise.model.param.UserRole">
+		insert into IMRole 
+		(RoleName,RoleLevel,RoleDescribe) 
+		values
+		(#{RoleName},#{RoleLevel},#{RoleDescribe})
+	</insert>
+	
+	<update id="update_RoleInfo" parameterType="com.fise.model.param.UserRole">
+		update IMRole 
+		<set>
+		<if test="RoleName!=null">RoleName=#{RoleName},</if>
+		<if test="RoleLevel!=0">RoleLevel=#{RoleLevel},</if>
+		<if test="RoleDescribe!=null">RoleDescribe=#{RoleDescribe},</if>
+		</set>
+		where id=#{RoleId}
+	</update>
+	
+	<select id="queryRoleInfo" resultMap="roleinfo">
+		select id,RoleName,RoleLevel,RoleDescribe from IMRole 
+	</select>
+	
+	<delete id="delete_RoleInfo" parameterType="int">
+		delete from IMRole where id=#{RoleId}
+	</delete>
+</mapper>

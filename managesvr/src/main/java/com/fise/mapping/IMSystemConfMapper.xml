@@ -1,0 +1,51 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper 
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" 
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+
+<mapper namespace="com.fise.mapping.IMSystemConfMapper">
+	<resultMap type="com.fise.model.result.StageConf" id="stageconf">
+		<id property="BackStageConfId" column="id"/>
+		<result property="BackStageConfType" column="type"/>
+		<result property="BackStageConfName" column="name"/>
+		<result property="BackStageConfValue" column="value"/>
+		<result property="BackStageConfAction" column="action"/>
+		<result property="BackStageConfStatus" column="status"/>
+	</resultMap>
+	
+	<sql id="sql">id,type,name,value,action,status</sql>
+	
+	<insert id="insert_backstageconf" parameterType="com.fise.model.result.StageConf">
+		insert into IMSystemConf 
+		(type,name,value,action,status) 
+		values 
+		(#{BackStageConfType},#{BackStageConfName},#{BackStageConfValue},#{BackStageConfAction},#{BackStageConfStatus})
+	</insert>
+	
+	<delete id="delete_backstageconf" parameterType="int">
+		delete from IMSystemConf
+		where id=#{BackStageId}
+	</delete>
+	
+	<select id="findbackstageinfos" parameterType="java.lang.String" resultMap="stageconf">
+		select<include refid="sql"/>from IMSystemConf
+		where name=#{BackStageConfName}
+	</select>
+	
+	<update id="update_backstageconf" parameterType="com.fise.model.result.StageConf">
+		update IMSystemConf 
+		<set>
+			<if test="BackStageConfType!=null">type=#{BackStageConfType},</if>
+			<if test="BackStageConfName!=null">name=#{BackStageConfName},</if>
+			<if test="BackStageConfValue!=null">value=#{BackStageConfValue},</if>
+			<if test="BackStageConfAction!=null">action=#{BackStageConfAction},</if>
+			<if test="BackStageConfStatus!=null">status=#{BackStageConfStatus},</if>
+		</set>
+		where id=#{BackStageConfId}
+	</update>
+	
+	<select id="findallbackstageinfos" resultMap="stageconf">
+		select<include refid="sql"/>from IMSystemConf
+	</select>
+	
+</mapper>

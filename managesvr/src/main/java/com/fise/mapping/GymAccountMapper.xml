@@ -1,0 +1,202 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="store.ifresh.os.fitness.dao.GymAccountMapper" >
+  <resultMap id="GymAccountMap" type="store.ifresh.os.fitness.model.entity.GymAccount" >
+    <result column="account_id" property="accountId" jdbcType="INTEGER" />
+    <result column="create_time" property="createTime" jdbcType="TIMESTAMP" />
+    <result column="update_time" property="updateTime" jdbcType="TIMESTAMP" />
+    <result column="gym_id" property="gymId" jdbcType="INTEGER" />
+    <result column="frozen_balance" property="frozenBalance" jdbcType="BIGINT" />
+    <result column="available_balance" property="availableBalance" jdbcType="BIGINT" />
+    <result column="wait_balance" property="waitBalance" jdbcType="BIGINT" />
+    <result column="settled_balance" property="settledBalance" jdbcType="BIGINT" />
+  </resultMap>
+  
+  <sql id="Base_Column_List" >
+    account_id, 
+    create_time, 
+    update_time, 
+    gym_id, 
+    frozen_balance, 
+    available_balance,
+    wait_balance,
+    settled_balance
+  </sql>
+  
+  <sql id="Base_Column_List_For_Join_Gym" >
+    a.account_id, 
+    a.create_time, 
+    a.update_time, 
+    a.gym_id, 
+    a.frozen_balance, 
+    a.available_balance,
+    a.wait_balance,
+    a.settled_balance
+  </sql>
+  
+  <sql id="Insert_Column_List" >
+    gym_id, 
+    frozen_balance, 
+    available_balance,
+    wait_balance,
+    settled_balance
+  </sql>
+  
+  <select id="selectMemberAccountByPrimaryKey" resultMap="GymAccountMap" parameterType="java.lang.Integer" >
+    select 
+    <include refid="Base_Column_List" />
+    from fit_gym_account
+    where account_id = #{accountId,jdbcType=INTEGER}
+  </select>
+  
+  <select id="selectGymAccountPage" resultMap="GymAccountMap">
+    select 
+    <include refid="Base_Column_List" />
+    from fit_gym_account order by create_time 
+  </select>
+  
+  <select id="selectGymAccountPageByGymName" resultMap="GymAccountMap">
+    select 
+    <include refid="Base_Column_List_For_Join_Gym" />
+    from fit_gym_account a left join fit_gym b on a.gym_id = b.gym_id
+    <where>
+    	<if test="page.extraParam != null and page.extraParam.gym_name != null">
+    			and b.gym_name like CONCAT('%', trim(#{page.extraParam.gym_name, jdbcType=VARCHAR}), '%') 
+    	</if>
+    </where>
+    order by a.create_time 
+  </select>
+  
+  <select id="selectGymAccountByGymId" resultMap="GymAccountMap" parameterType="java.lang.Integer" >
+    select 
+    <include refid="Base_Column_List" />
+    from fit_gym_account
+    where gym_id = #{gymId,jdbcType=INTEGER}
+  </select>
+  
+  <select id="selectTotalWaitBalance" resultType="store.ifresh.os.fitness.model.dto.GymAccountTotalDto" >
+  
+    select 
+    sum(wait_balance) totalWaitBalance, sum(frozen_balance) totalFrozenBalance, sum(available_balance) totalAvailableBalance, sum(settled_balance) totalSettledBalance
+    from fit_gym_account
+  </select>  
+  
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer" >
+    delete from fit_member_account
+    where account_id = #{accountId,jdbcType=INTEGER}
+  </delete>
+  
+  <insert id="insertGymAccount" parameterType="store.ifresh.os.fitness.model.entity.GymAccount" >
+    insert into fit_gym_account (<include refid="Insert_Column_List"/>)
+    values ( 
+      	#{gymId,jdbcType=INTEGER,typeHandler=store.ifresh.os.fitness.framework.typehandler.IntegerNullTypeHandler}, 
+      	#{frozenBalance,jdbcType=BIGINT,typeHandler=store.ifresh.os.fitness.framework.typehandler.LongNullTypeHandler}, 
+      	#{availableBalance,jdbcType=BIGINT,typeHandler=store.ifresh.os.fitness.framework.typehandler.LongNullTypeHandler},
+      	#{waitBalance,jdbcType=BIGINT,typeHandler=store.ifresh.os.fitness.framework.typehandler.LongNullTypeHandler},
+      	#{settledBalance,jdbcType=BIGINT,typeHandler=store.ifresh.os.fitness.framework.typehandler.LongNullTypeHandler}
+      )
+  </insert>
+  
+  <insert id="insertSelective" parameterType="store.ifresh.os.fitness.model.entity.GymAccount" >
+    insert into fit_gym_account
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="accountId != null" >
+        account_id,
+      </if>
+      <if test="createTime != null" >
+        create_time,
+      </if>
+      <if test="updateTime != null" >
+        update_time,
+      </if>
+      <if test="gymId != null" >
+        gym_id,
+      </if>
+      <if test="frozenBalance != null" >
+        frozen_balance,
+      </if>
+      <if test="availableBalance != null" >
+        available_balance,
+      </if>
+      <if test="waitBalance != null" >
+        wait_balance,
+      </if>
+      <if test="settledBalance != null" >
+        settled_balance,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="accountId != null" >
+        #{accountId,jdbcType=INTEGER},
+      </if>
+      <if test="createTime != null" >
+        #{createTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="updateTime != null" >
+        #{updateTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="gymId != null" >
+        #{gymId,jdbcType=INTEGER},
+      </if>
+      <if test="frozenBalance != null" >
+        #{frozenBalance,jdbcType=BIGINT},
+      </if>
+      <if test="availableBalance != null" >
+        #{availableBalance,jdbcType=BIGINT},
+      </if>
+      <if test="waitBalance != null" >
+        #{waitBalance,jdbcType=BIGINT},
+      </if>
+      <if test="settledBalance != null" >
+        #{settledBalance,jdbcType=BIGINT},
+      </if>
+    </trim>
+  </insert>
+  
+  <update id="updateByPrimaryKeySelective" parameterType="store.ifresh.os.fitness.model.entity.GymAccount" >
+    update fit_gym_account
+    <set >
+      <if test="createTime != null" >
+        create_time = #{createTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="updateTime != null" >
+        update_time = #{updateTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="gymId != null" >
+        gym_id = #{gymId,jdbcType=INTEGER},
+      </if>
+      <if test="frozenBalance != null" >
+        frozen_balance = #{frozenBalance,jdbcType=BIGINT},
+      </if>
+      <if test="availableBalance != null" >
+        available_balance = #{availableBalance,jdbcType=BIGINT},
+      </if>
+      <if test="waitBalance != null" >
+        wait_balance = #{waitBalance,jdbcType=BIGINT},
+      </if>
+      <if test="settledBalance != null" >
+        settled_balance = #{settledBalance,jdbcType=BIGINT},
+      </if>
+    </set>
+    where account_id = #{accountId,jdbcType=INTEGER}
+  </update>
+  
+  <update id="updateGymAccountBalance" parameterType="store.ifresh.os.fitness.model.entity.GymAccount" >
+    update fit_gym_account
+    <set >
+      <if test="frozenBalance != null" >
+        frozen_balance = #{frozenBalance,jdbcType=BIGINT},
+      </if>
+      <if test="availableBalance != null" >
+        available_balance = #{availableBalance,jdbcType=BIGINT},
+      </if>
+      <if test="waitBalance != null" >
+        wait_balance = #{waitBalance,jdbcType=BIGINT},
+      </if>
+      <if test="settledBalance != null" >
+        settled_balance = #{settledBalance,jdbcType=BIGINT},
+      </if>
+      </set>
+    where account_id = #{accountId,jdbcType=INTEGER}
+  </update>
+</mapper>

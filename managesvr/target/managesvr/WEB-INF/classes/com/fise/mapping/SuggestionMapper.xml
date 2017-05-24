@@ -1,0 +1,131 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="store.ifresh.os.fitness.dao.SuggestionMapper" >
+  <resultMap id="SuggestionMap" type="store.ifresh.os.fitness.model.entity.Suggestion" >
+    <id column="sug_id" property="sugId" jdbcType="INTEGER" />
+    <result column="create_time" property="createTime" jdbcType="TIMESTAMP" />
+    <result column="update_time" property="updateTime" jdbcType="TIMESTAMP" />
+    <result column="source_system_id" property="sourceSystemId" jdbcType="SMALLINT" />
+    <result column="source_user_id" property="sourceUserId" jdbcType="INTEGER" />
+    <result column="suggestion" property="suggestion" jdbcType="VARCHAR" />
+    <result column="state" property="state" jdbcType="TINYINT" />
+  </resultMap>
+  
+  <sql id="Base_Column_List" >
+    sug_id, 
+    create_time, 
+    update_time, 
+    source_system_id, 
+    source_user_id, 
+    suggestion, 
+    state
+  </sql>
+  
+  <sql id="Insert_Column_List" >
+    source_system_id, 
+    source_user_id, 
+    suggestion, 
+    state
+  </sql>
+  
+  <select id="selectByPrimaryKey" resultMap="SuggestionMap" parameterType="java.lang.Integer" >
+    select 
+    <include refid="Base_Column_List" />
+    from fit_suggestion
+    where sug_id = #{sugId,jdbcType=INTEGER}
+  </select>
+  
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer" >
+    delete from fit_suggestion
+    where sug_id = #{sugId,jdbcType=INTEGER}
+  </delete>
+  
+  <insert id="insert" parameterType="store.ifresh.os.fitness.model.entity.Suggestion" useGeneratedKeys="true" keyProperty="sugId">
+  	insert into fit_suggestion (<include refid="Insert_Column_List" />) 
+    values (
+		#{sourceSystemId,jdbcType=SMALLINT,typeHandler=store.ifresh.os.fitness.framework.typehandler.ShortNullTypeHandler}, 
+	    #{sourceUserId,jdbcType=INTEGER,typeHandler=store.ifresh.os.fitness.framework.typehandler.IntegerNullTypeHandler}, 
+	    #{suggestion,jdbcType=VARCHAR,typeHandler=store.ifresh.os.fitness.framework.typehandler.StringNullTypeHandler}, 
+	    #{state,jdbcType=TINYINT,typeHandler=store.ifresh.os.fitness.framework.typehandler.ByteNullTypeHandler}
+	)
+  </insert>
+  
+  <insert id="insertSelective" parameterType="store.ifresh.os.fitness.model.entity.Suggestion" >
+    insert into fit_suggestion
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="sugId != null" >
+        sug_id,
+      </if>
+      <if test="createTime != null" >
+        create_time,
+      </if>
+      <if test="updateTime != null" >
+        update_time,
+      </if>
+      <if test="sourceSystemId != null" >
+        source_system_id,
+      </if>
+      <if test="sourceUserId != null" >
+        source_user_id,
+      </if>
+      <if test="suggestion != null" >
+        suggestion,
+      </if>
+      <if test="state != null" >
+        state,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="sugId != null" >
+        #{sugId,jdbcType=INTEGER},
+      </if>
+      <if test="createTime != null" >
+        #{createTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="updateTime != null" >
+        #{updateTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="sourceSystemId != null" >
+        #{sourceSystemId,jdbcType=SMALLINT},
+      </if>
+      <if test="sourceUserId != null" >
+        #{sourceUserId,jdbcType=INTEGER},
+      </if>
+      <if test="suggestion != null" >
+        #{suggestion,jdbcType=VARCHAR},
+      </if>
+      <if test="state != null" >
+        #{state,jdbcType=TINYINT},
+      </if>
+    </trim>
+  </insert>
+  
+  <update id="updateByPrimaryKeySelective" parameterType="store.ifresh.os.fitness.model.entity.Suggestion" >
+    update fit_suggestion
+    <set >
+      <if test="sourceSystemId != null" >
+        source_system_id = #{sourceSystemId,jdbcType=SMALLINT},
+      </if>
+      <if test="sourceUserId != null" >
+        source_user_id = #{sourceUserId,jdbcType=INTEGER},
+      </if>
+      <if test="suggestion != null" >
+        suggestion = #{suggestion,jdbcType=VARCHAR},
+      </if>
+      <if test="state != null" >
+        state = #{state,jdbcType=TINYINT},
+      </if>
+    </set>
+    where sug_id = #{sugId,jdbcType=INTEGER}
+  </update>
+  
+  <update id="updateByPrimaryKey" parameterType="store.ifresh.os.fitness.model.entity.Suggestion" >
+    update fit_suggestion
+    set 
+      source_system_id = #{sourceSystemId,jdbcType=SMALLINT,typeHandler=store.ifresh.os.fitness.framework.typehandler.ShortNullTypeHandler},
+      source_user_id = #{sourceUserId,jdbcType=INTEGER,typeHandler=store.ifresh.os.fitness.framework.typehandler.IntegerNullTypeHandler},
+      suggestion = #{suggestion,jdbcType=VARCHAR,typeHandler=store.ifresh.os.fitness.framework.typehandler.StringNullTypeHandler},
+      state = #{state,jdbcType=TINYINT,typeHandler=store.ifresh.os.fitness.framework.typehandler.ByteNullTypeHandler}
+    where sug_id = #{sugId,jdbcType=INTEGER}
+  </update>
+</mapper>

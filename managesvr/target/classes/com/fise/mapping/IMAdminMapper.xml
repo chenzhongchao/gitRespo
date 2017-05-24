@@ -1,0 +1,73 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper 
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" 
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+
+<mapper namespace="com.fise.mapping.IMAdminMapper">
+	<resultMap type="com.fise.model.entity.IMAdmin" id="IMAdmin">
+		<id property="AdminId" column="id"/>
+		<result property="UserName" column="uname"/>
+		<result property="AuthenticCode" column="AuthenticCode"/>
+		<result property="UserLevel" column="userlevel"/>
+		<result property="NickName" column="nickname"/>
+		<result property="DepartId" column="departid"/>	
+	</resultMap>
+	
+	<resultMap type="com.fise.model.entity.IMAdmin" id="IMAdminAuth" extends="IMAdmin">
+		<collection property="usertAuthCode" ofType="com.fise.model.dto.UsertAuthCode">
+			<id property="AuthDirId" column="authid"/>
+			<result property="AuthDirName" column="AuthName"/>
+			<result property="AuthInterface" column="AuthInterface"/>
+		</collection>
+	</resultMap>
+		
+	<resultMap type="com.fise.model.result.UpdatePwd" id="UpdatePwd">
+		<id property="UserName" column="uname"/>
+		<result property="AuthenticCode" column="AuthenticCode"/>
+	</resultMap>
+	
+	<resultMap type="com.fise.model.dto.UsertAuthCode" id="UsertAuthCode">
+		<id property="AuthDirId" column="fid"/>
+		<result property="AuthDirName" column="AuthName"/>
+		<result property="AuthInterface" column="AuthInterface"/>
+	</resultMap>
+
+	
+	<sql id="sql1">uname,AuthenticCode</sql>
+	
+	<select id="user_login" parameterType="map" resultMap="IMAdminAuth">
+		select n.id,n.uname,n.AuthenticCode,n.userlevel,n.nickname,n.departid,i.authid,i.AuthName,i.AuthInterface
+		from
+		((select p.id,p.uname,p.AuthenticCode,p.userlevel,p.nickname,p.departid,m.authid
+		from
+		((select id,uname,AuthenticCode,userlevel,nickname,departid from IMAdmin where uname=#{UserName} and pwd=#{PassWord}) p
+		left join
+		(select userid,authid from IMAdminAuth) m 
+		on p.id=m.userid)) n  
+		left join
+		(select id as authid,AuthName,AuthInterface from IMUserAuthority) i
+		on n.authid=i.authid) 
+	</select>
+	
+	<select id="getPrivateAuth" parameterType="map" resultMap="UsertAuthCode">
+		select m.fid,m.AuthName,m.AuthInterface
+		from
+		((select userid,authid from IMAdminAuth) p
+		left join
+		(select id as authid,AuthName,AuthInterface,fid from IMUserAuthority) m
+		on p.authid=m.authid) where p.userid=#{UserId} and m.fid=#{AuthFid}
+	</select> 
+	
+	<update id="update_pwd" parameterType="map">
+		update IMAdmin set pwd=#{Newpassword} where uname=#{UserName} and AuthenticCode=#{AuthenticCode}
+	</update>
+	
+	<update id="update_nickname" parameterType="map">
+		update IMAdmin set nickname=#{NewNickName} where uname=#{UserName} and AuthenticCode=#{AuthenticCode}
+	</update>
+	
+	<select id="selectOneByName" parameterType="java.lang.String" resultMap="UpdatePwd">
+		select<include refid="sql1"/>from IMAdmin where uname=#{UserName}
+	</select>
+
+</mapper>

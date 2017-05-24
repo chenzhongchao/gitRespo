@@ -1,0 +1,537 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="store.ifresh.os.fitness.dao.OrderMapper">
+	<resultMap id="OrderMap" type="store.ifresh.os.fitness.model.entity.Order" >
+        <result column="order_id" property="orderId" jdbcType="BIGINT" />
+        <result column="sn" property="sn" jdbcType="VARCHAR" />
+        <result column="gym_id" property="gymId" jdbcType="INTEGER" />
+		<result column="member_id" property="memberId" jdbcType="INTEGER" />
+		<result column="status" property="status" jdbcType="SMALLINT" />
+		<result column="pay_status" property="payStatus" jdbcType="SMALLINT" />
+		<result column="rights_status" property="rightsStatus" jdbcType="SMALLINT" />
+		<result column="refund_status" property="refundStatus" jdbcType="SMALLINT" />
+		<result column="payment_id" property="paymentId" jdbcType="INTEGER" />
+		<result column="payment_name" property="paymentName" jdbcType="VARCHAR" />
+		<result column="payment_type" property="paymentType" jdbcType="VARCHAR" />
+		<result column="payment_time" property="paymentTime" jdbcType="TIMESTAMP" />
+		<result column="pay_amount" property="payAmount" jdbcType="BIGINT" />
+		<result column="transaction_id" property="transactionId" jdbcType="VARCHAR" />
+		<result column="transaction_sn" property="transactionSn" jdbcType="VARCHAR" />
+		<result column="refund_amount" property="refundAmount" jdbcType="BIGINT" />
+        <result column="create_time" property="createTime" jdbcType="TIMESTAMP" />
+        <result column="update_time" property="updateTime" jdbcType="TIMESTAMP" />
+		<result column="order_amount" property="orderAmount" jdbcType="BIGINT" />
+		<result column="remark" property="remark" jdbcType="VARCHAR" />
+		<result column="is_disabled" property="isDisabled" jdbcType="SMALLINT" />
+		<result column="complete_time" property="completeTime" jdbcType="TIMESTAMP" />
+		<result column="need_pay_amount" property="needPayAmount" jdbcType="BIGINT" />
+		<result column="is_commented" property="isCommented" jdbcType="SMALLINT" />
+		<result column="after_sale_status" property="afterSaleStatus" jdbcType="SMALLINT" />
+		<result column="order_source" property="orderSource" jdbcType="VARCHAR" />
+		<result column="refund_reason" property="refundReason" jdbcType="VARCHAR" />
+		<result column="refund_time" property="refundTime" jdbcType="TIMESTAMP" />
+		<result column="refund_approve_remark" property="refundApproveRemark" jdbcType="VARCHAR" />
+		<result column="refund_reject_remark" property="refundRejectRemark" jdbcType="VARCHAR" />
+		<result column="coupon_amount" property="couponAmount" jdbcType="BIGINT" />
+		<result column="coupon_id" property="couponId" jdbcType="INTEGER" />
+		<result column="balance_pay_amount" property="balancePayAmount" jdbcType="BIGINT" />
+		<result column="order_bill_time" property="orderBillTime" jdbcType="TIMESTAMP" />
+		<result column="order_bill_flag" property="orderBillFlag" jdbcType="SMALLINT" />
+		<result column="deposit_amount" property="depositAmount" jdbcType="BIGINT" />
+    </resultMap>
+    
+    <sql id="Base_Column_List" >
+		order_id,
+		sn,
+		gym_id,
+		member_id,
+		status,
+		pay_status,
+		rights_status,
+		refund_status,
+		payment_id,
+		payment_name,
+		payment_type,
+		payment_time,
+		pay_amount,
+		transaction_id,
+		transaction_sn,
+		refund_amount,
+		create_time,
+		update_time,
+		order_amount,
+		remark,
+		is_disabled,
+		complete_time,
+		need_pay_amount,
+		is_commented,
+		after_sale_status,
+		order_source,
+		refund_reason,
+		refund_time,
+		refund_approve_remark,
+		refund_reject_remark,
+		coupon_amount,
+		coupon_id,
+		balance_pay_amount,
+		order_bill_time,
+		order_bill_flag,
+		deposit_amount
+    </sql>
+    
+    <sql id="Base_Column_List_For_Join_Member" >
+		a.order_id,
+		a.sn,
+		a.gym_id,
+		a.member_id,
+		a.status,
+		a.pay_status,
+		a.rights_status,
+		a.refund_status,
+		a.payment_id,
+		a.payment_name,
+		a.payment_type,
+		a.payment_time,
+		a.pay_amount,
+		a.transaction_id,
+		a.transaction_sn,
+		a.refund_amount,
+		a.create_time,
+		a.update_time,
+		a.order_amount,
+		a.remark,
+		a.is_disabled,
+		a.complete_time,
+		a.need_pay_amount,
+		a.is_commented,
+		a.after_sale_status,
+		a.order_source,
+		a.refund_reason,
+		a.refund_time,
+		a.refund_approve_remark,
+		a.refund_reject_remark,
+		a.coupon_amount,
+		a.coupon_id,
+		a.balance_pay_amount,
+		a.order_bill_time,
+		a.order_bill_flag,
+		a.deposit_amount
+    </sql>
+    
+    <sql id="Insert_Column_List" >
+		sn,
+		gym_id,
+		member_id,
+		status,
+		pay_status,
+		rights_status,
+		refund_status,
+		payment_id,
+		payment_name,
+		payment_type,
+		payment_time,
+		pay_amount,
+		transaction_id,
+		transaction_sn,
+		refund_amount,
+		order_amount,
+		remark,
+		is_disabled,
+		complete_time,
+		need_pay_amount,
+		is_commented,
+		after_sale_status,
+		order_source,
+		refund_reason,
+		refund_time,
+		refund_approve_remark,
+		refund_reject_remark,
+		coupon_amount,
+		coupon_id,
+		balance_pay_amount,
+		order_bill_time,
+		order_bill_flag,
+		deposit_amount
+    </sql>
+    
+    <sql id="Where_Clause" >
+    	<if test="order.orderId != null">
+        and order_id = #{order.orderId,jdbcType=BIGINT}
+        </if>
+        <if test="order.sn != null">
+        and sn = #{order.sn,jdbcType=VARCHAR}
+        </if>
+        <if test="order.gymId != null">
+        and gym_id = #{order.gymId,jdbcType=INTEGER}
+        </if>
+        <if test="order.memberId != null">
+        and member_id = #{order.memberId,jdbcType=INTEGER}
+        </if>
+        <if test="order.status != null">
+        and status = #{order.status,jdbcType=SMALLINT}
+        </if>
+        <if test="order.payStatus != null">
+        and pay_status = #{order.payStatus,jdbcType=SMALLINT}
+        </if>
+        <if test="order.rightsStatus != null">
+        and rights_status = #{order.rightsStatus,jdbcType=SMALLINT}
+        </if>
+        <if test="order.refundStatus != null">
+        and refund_status = #{order.refundStatus,jdbcType=SMALLINT}
+        </if>
+        <if test="order.paymentId != null">
+        and payment_id = #{order.paymentId,jdbcType=INTEGER}
+        </if>
+        <if test="order.paymentName != null">
+        and payment_name = #{order.paymentName,jdbcType=VARCHAR}
+        </if>
+        <if test="order.paymentType != null">
+        and payment_type = #{order.paymentType,jdbcType=VARCHAR}
+        </if>
+        <if test="order.paymentTime != null">
+        and payment_time = #{order.paymentTime,jdbcType=TIMESTAMP}
+        </if>
+        <if test="order.payAmount != null">
+        and pay_amount = #{order.payAmount,jdbcType=BIGINT}
+        </if>
+        <if test="order.transactionId != null">
+        and transaction_id = #{order.transactionId,jdbcType=VARCHAR}
+        </if>
+        <if test="order.transactionSn != null">
+        and transaction_sn = #{order.transactionSn,jdbcType=VARCHAR}
+        </if>
+        <if test="order.refundAmount != null">
+        and refund_amount = #{order.refundAmount,jdbcType=BIGINT}
+        </if>
+        <if test="order.createTime != null">
+        and create_time = #{order.createTime,jdbcType=TIMESTAMP}
+        </if>
+        <if test="order.updateTime != null">
+        and update_time = #{order.updateTime,jdbcType=TIMESTAMP}
+        </if>
+        <if test="order.orderAmount != null">
+        and order_amount = #{order.orderAmount,jdbcType=BIGINT}
+        </if>
+        <if test="order.orderAmount != null">
+        and order_amount = #{order.orderAmount,jdbcType=BIGINT}
+        </if>
+        <if test="order.remark != null">
+        and remark = #{order.remark,jdbcType=VARCHAR}
+        </if>
+        <if test="order.isDisabled != null">
+        and is_disabled = #{order.isDisabled,jdbcType=SMALLINT}
+        </if>
+        <if test="order.completeTime != null">
+        and complete_time = #{order.completeTime,jdbcType=TIMESTAMP}
+        </if>
+        <if test="order.needPayAmount != null">
+        and need_pay_amount = #{order.needPayAmount,jdbcType=BIGINT}
+        </if>
+        <if test="order.isCommented != null">
+        and is_commented = #{order.isCommented,jdbcType=SMALLINT}
+        </if>
+        <if test="order.afterSaleStatus != null">
+        and after_sale_status = #{order.afterSaleStatus,jdbcType=SMALLINT}
+        </if>
+        <if test="order.orderSource != null">
+        and order_source = #{order.orderSource,jdbcType=VARCHAR}
+        </if>
+        <if test="order.refundReason != null">
+        and refund_reason = #{order.refundReason,jdbcType=VARCHAR}
+        </if>
+        <if test="order.refundTime != null">
+        and refund_time = #{order.refundTime,jdbcType=TIMESTAMP}
+        </if>
+        <if test="order.refundApproveRemark != null">
+        and refund_approve_remark = #{order.refundApproveRemark,jdbcType=VARCHAR}
+        </if>
+        <if test="order.refundRejectRemark != null">
+        and refund_reject_remark = #{order.refundRejectRemark,jdbcType=VARCHAR}
+        </if>
+        <if test="order.couponAmount != null">
+        and coupon_amount = #{order.couponAmount,jdbcType=BIGINT}
+        </if>
+        <if test="order.couponId != null">
+        and coupon_id = #{order.couponId,jdbcType=INTEGER}
+        </if>
+        <if test="order.balancePayAmount != null">
+        and balance_pay_amount = #{order.balancePayAmount,jdbcType=BIGINT}
+        </if>
+        <if test="order.orderBillTime != null">
+        and order_bill_time = #{order.orderBillTime,jdbcType=TIMESTAMP}
+        </if>
+        <if test="order.orderBillFlag != null">
+        and order_bill_flag = #{order.orderBillFlag,jdbcType=SMALLINT}
+        </if>
+        <if test="order.depositAmount != null">
+        and deposit_amount = #{order.depositAmount,jdbcType=BIGINT}
+        </if>
+    </sql>
+    
+    <insert id="insertOrder" parameterType="store.ifresh.os.fitness.model.entity.Order" useGeneratedKeys="true" keyProperty="orderId">
+    	insert into fit_order (<include refid="Insert_Column_List" />) 
+    	values (
+			#{sn,jdbcType=VARCHAR,typeHandler=store.ifresh.os.fitness.framework.typehandler.StringNullTypeHandler},
+    		#{gymId,jdbcType=INTEGER,typeHandler=store.ifresh.os.fitness.framework.typehandler.IntegerNullTypeHandler},
+    		#{memberId,jdbcType=INTEGER,typeHandler=store.ifresh.os.fitness.framework.typehandler.IntegerNullTypeHandler},
+			#{status,jdbcType=SMALLINT,typeHandler=store.ifresh.os.fitness.framework.typehandler.IntegerNullTypeHandler},
+			#{payStatus,jdbcType=SMALLINT,typeHandler=store.ifresh.os.fitness.framework.typehandler.IntegerNullTypeHandler},
+			#{rightsStatus,jdbcType=SMALLINT,typeHandler=store.ifresh.os.fitness.framework.typehandler.IntegerNullTypeHandler},
+			#{refundStatus,jdbcType=SMALLINT,typeHandler=store.ifresh.os.fitness.framework.typehandler.IntegerNullTypeHandler},
+			#{paymentId,jdbcType=INTEGER,typeHandler=store.ifresh.os.fitness.framework.typehandler.IntegerNullTypeHandler},
+			#{paymentName,jdbcType=VARCHAR,typeHandler=store.ifresh.os.fitness.framework.typehandler.StringNullTypeHandler},
+			#{paymentType,jdbcType=VARCHAR,typeHandler=store.ifresh.os.fitness.framework.typehandler.StringNullTypeHandler},
+			#{paymentTime,jdbcType=TIMESTAMP,typeHandler=store.ifresh.os.fitness.framework.typehandler.DateNullTypeHandler},
+			#{payAmount,jdbcType=BIGINT,typeHandler=store.ifresh.os.fitness.framework.typehandler.LongNullTypeHandler},
+			#{transactionId,jdbcType=VARCHAR,typeHandler=store.ifresh.os.fitness.framework.typehandler.StringNullTypeHandler},
+			#{transactionSn,jdbcType=VARCHAR,typeHandler=store.ifresh.os.fitness.framework.typehandler.StringNullTypeHandler},
+			#{refundAmount,jdbcType=BIGINT,typeHandler=store.ifresh.os.fitness.framework.typehandler.LongNullTypeHandler},
+			#{orderAmount,jdbcType=BIGINT,typeHandler=store.ifresh.os.fitness.framework.typehandler.LongNullTypeHandler},
+			#{remark,jdbcType=VARCHAR,typeHandler=store.ifresh.os.fitness.framework.typehandler.StringNullTypeHandler},
+			#{isDisabled,jdbcType=SMALLINT,typeHandler=store.ifresh.os.fitness.framework.typehandler.IntegerNullTypeHandler},
+			#{completeTime,jdbcType=TIMESTAMP,typeHandler=store.ifresh.os.fitness.framework.typehandler.DateNullTypeHandler},
+			#{needPayAmount,jdbcType=BIGINT,typeHandler=store.ifresh.os.fitness.framework.typehandler.LongNullTypeHandler},
+			#{isCommented,jdbcType=SMALLINT,typeHandler=store.ifresh.os.fitness.framework.typehandler.IntegerNullTypeHandler},
+			#{afterSaleStatus,jdbcType=SMALLINT,typeHandler=store.ifresh.os.fitness.framework.typehandler.IntegerNullTypeHandler},
+			#{orderSource,jdbcType=VARCHAR,typeHandler=store.ifresh.os.fitness.framework.typehandler.StringNullTypeHandler},
+			#{refundReason,jdbcType=VARCHAR,typeHandler=store.ifresh.os.fitness.framework.typehandler.StringNullTypeHandler},
+			#{refundTime,jdbcType=TIMESTAMP,typeHandler=store.ifresh.os.fitness.framework.typehandler.DateNullTypeHandler},
+			#{refundApproveRemark,jdbcType=VARCHAR,typeHandler=store.ifresh.os.fitness.framework.typehandler.StringNullTypeHandler},
+			#{refundRejectRemark,jdbcType=VARCHAR,typeHandler=store.ifresh.os.fitness.framework.typehandler.StringNullTypeHandler},
+			#{couponAmount,jdbcType=BIGINT,typeHandler=store.ifresh.os.fitness.framework.typehandler.LongNullTypeHandler},
+    		#{couponId,jdbcType=INTEGER,typeHandler=store.ifresh.os.fitness.framework.typehandler.IntegerNullTypeHandler},
+			#{balancePayAmount,jdbcType=BIGINT,typeHandler=store.ifresh.os.fitness.framework.typehandler.LongNullTypeHandler},
+			#{orderBillTime,jdbcType=TIMESTAMP,typeHandler=store.ifresh.os.fitness.framework.typehandler.DateNullTypeHandler},
+			#{orderBillFlag,jdbcType=SMALLINT,typeHandler=store.ifresh.os.fitness.framework.typehandler.IntegerNullTypeHandler},
+			#{depositAmount,jdbcType=BIGINT,typeHandler=store.ifresh.os.fitness.framework.typehandler.LongNullTypeHandler}
+    	)
+    </insert>
+    
+    <update id="updateOrderStatus" parameterType="store.ifresh.os.fitness.model.entity.Order" >
+        update fit_order
+        <set>
+	    	<if test="status != null"> status = #{status,jdbcType=SMALLINT}, </if>
+        </set> 
+        where order_id = #{orderId,jdbcType=VARCHAR}
+    </update>
+    
+    <update id="updateByPrimaryKeySelective" parameterType="store.ifresh.os.fitness.model.entity.Order" >
+	    update fit_order
+	    <set >
+	    	<if test="orderId != null">
+	        	order_id = #{orderId,jdbcType=BIGINT},
+	        </if>
+	        <if test="sn != null">
+	        	sn = #{sn,jdbcType=VARCHAR},
+	        </if>
+	        <if test="gymId != null">
+	        	gym_id = #{gymId,jdbcType=INTEGER},
+	        </if>
+	        <if test="memberId != null">
+	        	member_id = #{memberId,jdbcType=INTEGER},
+	        </if>
+	        <if test="status != null">
+	        	status = #{status,jdbcType=SMALLINT},
+	        </if>
+	        <if test="payStatus != null">
+	        	pay_status = #{payStatus,jdbcType=SMALLINT},
+	        </if>
+	        <if test="rightsStatus != null">
+	        	rights_status = #{rightsStatus,jdbcType=SMALLINT},
+	        </if>
+	        <if test="refundStatus != null">
+	        	refund_status = #{refundStatus,jdbcType=SMALLINT},
+	        </if>
+	        <if test="paymentId != null">
+	        	payment_id = #{paymentId,jdbcType=INTEGER},
+	        </if>
+	        <if test="paymentName != null">
+	        	payment_name = #{paymentName,jdbcType=VARCHAR},
+	        </if>
+	        <if test="paymentType != null">
+	        	payment_type = #{paymentType,jdbcType=VARCHAR},
+	        </if>
+	        <if test="paymentTime != null">
+	        	payment_time = #{paymentTime,jdbcType=TIMESTAMP},
+	        </if>
+	        <if test="payAmount != null">
+	        	pay_amount = #{payAmount,jdbcType=BIGINT},
+	        </if>
+	        <if test="transactionId != null">
+	        	transaction_id = #{transactionId,jdbcType=VARCHAR},
+	        </if>
+	        <if test="transactionSn != null">
+	        	transaction_sn = #{transactionSn,jdbcType=VARCHAR},
+	        </if>
+	        <if test="refundAmount != null">
+	        	refund_amount = #{refundAmount,jdbcType=BIGINT},
+	        </if>
+	        <if test="createTime != null">
+	        	create_time = #{createTime,jdbcType=TIMESTAMP},
+	        </if>
+	        <if test="updateTime != null">
+	        	update_time = #{updateTime,jdbcType=TIMESTAMP},
+	        </if>
+	        <if test="orderAmount != null">
+	        	order_amount = #{orderAmount,jdbcType=BIGINT},
+	        </if>
+	        <if test="orderAmount != null">
+	        	order_amount = #{orderAmount,jdbcType=BIGINT},
+	        </if>
+	        <if test="remark != null">
+	        	remark = #{remark,jdbcType=VARCHAR},
+	        </if>
+	        <if test="isDisabled != null">
+	        	is_disabled = #{isDisabled,jdbcType=SMALLINT},
+	        </if>
+	        <if test="completeTime != null">
+	        	complete_time = #{completeTime,jdbcType=TIMESTAMP},
+	        </if>
+	        <if test="needPayAmount != null">
+	        	need_pay_amount = #{needPayAmount,jdbcType=BIGINT},
+	        </if>
+	        <if test="isCommented != null">
+	        	is_commented = #{isCommented,jdbcType=SMALLINT},
+	        </if>
+	        <if test="afterSaleStatus != null">
+	        	after_sale_status = #{afterSaleStatus,jdbcType=SMALLINT},
+	        </if>
+	        <if test="orderSource != null">
+	        	order_source = #{orderSource,jdbcType=VARCHAR},
+	        </if>
+	        <if test="refundReason != null">
+	        	refund_reason = #{refundReason,jdbcType=VARCHAR},
+	        </if>
+	        <if test="refundTime != null">
+	        	refund_time = #{refundTime,jdbcType=TIMESTAMP},
+	        </if>
+	        <if test="refundApproveRemark != null">
+	        	refund_approve_remark = #{refundApproveRemark,jdbcType=VARCHAR},
+	        </if>
+	        <if test="refundRejectRemark != null">
+	        	refund_reject_remark = #{refundRejectRemark,jdbcType=VARCHAR},
+	        </if>
+	        <if test="couponAmount != null">
+	        	coupon_amount = #{couponAmount,jdbcType=BIGINT},
+	        </if>
+	        <if test="couponId != null">
+	        	coupon_id = #{couponId,jdbcType=INTEGER},
+	        </if>
+	        <if test="balancePayAmount != null">
+	        	balance_pay_amount = #{balancePayAmount,jdbcType=BIGINT},
+	        </if>
+	        <if test="orderBillTime != null">
+	        	order_bill_time = #{orderBillTime,jdbcType=TIMESTAMP},
+	        </if>
+	        <if test="orderBillFlag != null">
+	        	order_bill_flag = #{orderBillFlag,jdbcType=SMALLINT},
+	        </if>
+	        <if test="depositAmount != null">
+	        	deposit_amount = #{depositAmount,jdbcType=BIGINT},
+	        </if>
+	    </set>
+	    where order_id = #{orderId,jdbcType=BIGINT}
+  	</update>
+    
+    
+    
+    <select id="selectBySn" resultMap="OrderMap" parameterType="java.lang.String" >
+	    select 
+	    <include refid="Base_Column_List" />
+	    from fit_order
+	    where sn = #{sn,jdbcType=VARCHAR}
+  	</select>
+  	
+  	
+  	<!-- TODO 优化成动态sql -->
+  	<select id="selectByOrder" resultMap="OrderMap" parameterType="store.ifresh.os.fitness.model.entity.Order" >
+	    select 
+	    <include refid="Base_Column_List" />
+	    from fit_order
+	    where sn = #{sn,jdbcType=VARCHAR} and 
+	    	  member_id = #{memberId,jdbcType=INTEGER} and 
+	    	  gym_id = #{gymId, jdbcType=INTEGER} and
+	    	  status =  #{status, jdbcType=SMALLINT}
+  	</select>
+  	
+  	<select id="selectListByOrder" resultMap="OrderMap" parameterType="store.ifresh.os.fitness.model.entity.Order">
+  		select 
+  		<include refid="Base_Column_List" />
+  		from fit_order
+  		<where>
+    		<include refid="Where_Clause"></include>
+    	</where>
+  	</select>
+  	
+  	<select id="selectListUnionMeberByOrderAndMember" resultMap="OrderMap" parameterType="store.ifresh.os.fitness.model.entity.Order">
+  		select 
+  		<include refid="Base_Column_List_For_Join_Member" />
+  		from fit_order a LEFT JOIN fit_member b ON a.member_id = b.member_id 
+  		<where>
+    		<if test="order.gymId != null">
+	        	and a.gym_id = #{order.gymId,jdbcType=INTEGER}
+	        </if>
+	        <if test="order.status != null">
+	        	and a.status = #{order.status,jdbcType=SMALLINT}
+	        </if>
+    		<if test="page.extraParam != null and page.extraParam.mobile != null">
+    			and b.mobile like CONCAT(trim(#{page.extraParam.mobile, jdbcType=VARCHAR}), '%') 
+    		</if>
+    		<if test="page.extraParam != null and page.extraParam.nickName != null">
+    			and b.nick_name like CONCAT(trim(#{page.extraParam.nickName, jdbcType=VARCHAR}), '%') 
+    		</if>
+    	</where>
+    	order by a.create_time asc
+  	</select>
+  	
+  	<select id="selectByOrderSelective" resultMap="OrderMap" parameterType="store.ifresh.os.fitness.model.entity.Order">
+	    select
+	    <include refid="Base_Column_List" />
+	    from fit_order
+	    <where>
+		    <if test="_parameter != null" >
+		      <include refid="Where_Clause" />
+		    </if>
+	    </where>
+  	</select>
+  	
+	<select id="selectCount" resultType="java.lang.Long">
+	    SELECT
+	    count(*)
+	    FROM fit_order
+		WHERE status = #{status, jdbcType=SMALLINT}
+		AND create_time > #{beginTime, jdbcType=TIMESTAMP}
+  	</select>  	
+  	
+  	<select id="selectCompleteCount" resultType="java.lang.Long">
+	    SELECT
+	    count(*)
+	    FROM fit_order
+		WHERE status in (2, 3, 4)
+		AND create_time >= #{beginTime, jdbcType=TIMESTAMP}
+  	</select>  	
+  	
+  	<select id="selectGymMemberCount" resultType="java.lang.Long">
+	    SELECT
+	    count(distinct(member_id))
+	    FROM fit_order
+		WHERE gym_id = #{gymId, jdbcType=INTEGER}
+  	</select>
+  	
+  	<select id="selectGymActiveMemberCount" resultType="java.lang.Long">
+	    SELECT
+	    count(distinct(member_id))
+	    FROM fit_order
+		WHERE gym_id = #{gymId, jdbcType=INTEGER}
+		AND create_time >= #{beginTime, jdbcType=TIMESTAMP}
+  	</select>
+
+	<select id="selectGymFrozenMemberCount" resultType="java.lang.Long">
+	    SELECT  
+	    count(distinct(a.member_id)) 
+	    FROM fit_member a left join fit_order b  
+	    ON a.member_id = b.member_id  
+	    where a.status = 1 and b.gym_id = #{gymId, jdbcType=INTEGER}
+  	</select>  	
+  	
+</mapper>

@@ -1,0 +1,319 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="store.ifresh.os.fitness.dao.MemberAccountTransactionMapper" >
+  <resultMap id="MemberAccountTransactionMap" type="store.ifresh.os.fitness.model.entity.MemberAccountTransaction" >
+    <result column="trans_id" property="transId" jdbcType="INTEGER" />
+    <result column="create_time" property="createTime" jdbcType="TIMESTAMP" />
+    <result column="update_time" property="updateTime" jdbcType="TIMESTAMP" />
+    <result column="trans_no" property="transNo" jdbcType="VARCHAR" />
+    <result column="member_id" property="memberId" jdbcType="INTEGER" />
+    <result column="order_id" property="orderId" jdbcType="BIGINT" />
+    <result column="operate_type" property="operateType" jdbcType="TINYINT" />
+    <result column="pay_method" property="payMethod" jdbcType="TINYINT" />
+    <result column="amount" property="amount" jdbcType="BIGINT" />
+    <result column="pre_balance" property="preBalance" jdbcType="BIGINT" />
+    <result column="post_balance" property="postBalance" jdbcType="BIGINT" />
+    <result column="thirdparty_payment_account" property="thirdpartyPaymentAccount" jdbcType="VARCHAR" />
+    <result column="thirdparty_payment_name" property="thirdpartyPaymentName" jdbcType="VARCHAR" />
+    <result column="bank_name" property="bankName" jdbcType="VARCHAR" />
+    <result column="bank_address" property="bankAddress" jdbcType="VARCHAR" />
+    <result column="bank_code" property="bankCode" jdbcType="VARCHAR" />
+    <result column="bank_card_no" property="bankCardNo" jdbcType="VARCHAR" />
+    <result column="bank_card_name" property="bankCardName" jdbcType="VARCHAR" />
+    <result column="withdraw_deposit_remark" property="withdrawDepositRemark" jdbcType="VARCHAR" />
+    <result column="refund_amount" property="refundAmount" jdbcType="BIGINT" />
+    <result column="state" property="state" jdbcType="TINYINT" />
+  </resultMap>
+  
+  <resultMap id="ChargeStatMap" type="store.ifresh.os.fitness.model.dto.ChargeStatDto" >
+  	<result column="period" property="period" jdbcType="VARCHAR" />
+  	<result column="amount" property="amount" jdbcType="BIGINT" />
+  </resultMap>
+
+  <sql id="Base_Column_List" >
+    trans_id, 
+    create_time, 
+    update_time, 
+    trans_no, 
+    member_id, 
+    order_id, 
+    operate_type, 
+    pay_method, 
+    amount, 
+    pre_balance, 
+    post_balance, 
+    thirdparty_payment_account, 
+    thirdparty_payment_name, 
+    bank_name, 
+    bank_address, 
+    bank_code, 
+    bank_card_no, 
+    bank_card_name, 
+    withdraw_deposit_remark, 
+    refund_amount, 
+    state
+  </sql>
+  
+  <sql id="Insert_Column_List" >
+    trans_no, 
+    member_id, 
+    order_id, 
+    operate_type, 
+    pay_method, 
+    amount, 
+    pre_balance, 
+    post_balance, 
+    thirdparty_payment_account, 
+    thirdparty_payment_name, 
+    bank_name, 
+    bank_address, 
+    bank_code, 
+    bank_card_no, 
+    bank_card_name, 
+    withdraw_deposit_remark, 
+    refund_amount, 
+    state
+  </sql>
+  
+  <insert id="insertMemberAccountTransaction" parameterType="store.ifresh.os.fitness.model.entity.MemberAccountTransaction" >
+    insert into fit_member_account_transaction (<include refid="Insert_Column_List"/>)
+    values ( 
+    	#{transNo,jdbcType=VARCHAR,typeHandler=store.ifresh.os.fitness.framework.typehandler.StringNullTypeHandler},
+      	#{memberId,jdbcType=INTEGER,typeHandler=store.ifresh.os.fitness.framework.typehandler.IntegerNullTypeHandler},
+      	#{orderId,jdbcType=BIGINT,typeHandler=store.ifresh.os.fitness.framework.typehandler.LongNullTypeHandler},
+      	#{operateType,jdbcType=SMALLINT,typeHandler=store.ifresh.os.fitness.framework.typehandler.IntegerNullTypeHandler}, 
+      	#{payMethod,jdbcType=SMALLINT,typeHandler=store.ifresh.os.fitness.framework.typehandler.IntegerNullTypeHandler},
+      	#{amount,jdbcType=BIGINT,typeHandler=store.ifresh.os.fitness.framework.typehandler.LongNullTypeHandler},
+      	#{preBalance,jdbcType=BIGINT,typeHandler=store.ifresh.os.fitness.framework.typehandler.LongNullTypeHandler},
+      	#{postBalance,jdbcType=BIGINT,typeHandler=store.ifresh.os.fitness.framework.typehandler.LongNullTypeHandler},
+      	#{thirdpartyPaymentAccount,jdbcType=VARCHAR,typeHandler=store.ifresh.os.fitness.framework.typehandler.StringNullTypeHandler},
+      	#{thirdpartyPaymentName,jdbcType=VARCHAR,typeHandler=store.ifresh.os.fitness.framework.typehandler.StringNullTypeHandler},
+      	#{bankName,jdbcType=VARCHAR,typeHandler=store.ifresh.os.fitness.framework.typehandler.StringNullTypeHandler},
+      	#{bankAddress,jdbcType=VARCHAR,typeHandler=store.ifresh.os.fitness.framework.typehandler.StringNullTypeHandler},
+      	#{bankCode,jdbcType=VARCHAR,typeHandler=store.ifresh.os.fitness.framework.typehandler.StringNullTypeHandler},
+      	#{bankCardNo,jdbcType=VARCHAR,typeHandler=store.ifresh.os.fitness.framework.typehandler.StringNullTypeHandler},
+      	#{bankCardName,jdbcType=VARCHAR,typeHandler=store.ifresh.os.fitness.framework.typehandler.StringNullTypeHandler},
+      	#{withdrawDepositRemark,jdbcType=VARCHAR,typeHandler=store.ifresh.os.fitness.framework.typehandler.StringNullTypeHandler},
+      	#{refundAmount,jdbcType=BIGINT,typeHandler=store.ifresh.os.fitness.framework.typehandler.LongNullTypeHandler},
+      	#{state,jdbcType=SMALLINT,typeHandler=store.ifresh.os.fitness.framework.typehandler.IntegerNullTypeHandler}
+      )
+  </insert>
+  
+  
+  <select id="selectByPrimaryKey" resultMap="MemberAccountTransactionMap" parameterType="java.lang.Integer" >
+    select 
+    <include refid="Base_Column_List" />
+    from fit_member_account_transaction
+    where trans_id = #{transId,jdbcType=INTEGER}
+  </select>
+  
+  <select id="selectByTransNoUniKey" resultMap="MemberAccountTransactionMap" parameterType="java.lang.String" >
+    select 
+    <include refid="Base_Column_List" />
+    from fit_member_account_transaction
+    where trans_no = #{transNo,jdbcType=VARCHAR}
+  </select>
+  
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer" >
+    delete from fit_member_account_transaction
+    where trans_id = #{transId,jdbcType=INTEGER}
+  </delete>
+  
+  
+  <insert id="insert" parameterType="store.ifresh.os.fitness.model.entity.MemberAccountTransaction" >
+    insert into fit_member_account_transaction (trans_id, create_time, update_time, 
+      trans_no, member_id, order_id, 
+      operate_type, pay_method, amount, 
+      pre_balance, post_balance, thirdparty_payment_account, 
+      thirdparty_payment_name, bank_name, bank_address, 
+      bank_code, bank_card_no, bank_card_name, 
+      withdraw_deposit_remark, refund_amount, state
+      )
+    values (#{transId,jdbcType=INTEGER}, #{createTime,jdbcType=TIMESTAMP}, #{updateTime,jdbcType=TIMESTAMP}, 
+      #{transNo,jdbcType=VARCHAR}, #{memberId,jdbcType=INTEGER}, #{orderId,jdbcType=BIGINT}, 
+      #{operateType,jdbcType=TINYINT}, #{payMethod,jdbcType=TINYINT}, #{amount,jdbcType=BIGINT}, 
+      #{preBalance,jdbcType=BIGINT}, #{postBalance,jdbcType=BIGINT}, #{thirdpartyPaymentAccount,jdbcType=VARCHAR}, 
+      #{thirdpartyPaymentName,jdbcType=VARCHAR}, #{bankName,jdbcType=VARCHAR}, #{bankAddress,jdbcType=VARCHAR}, 
+      #{bankCode,jdbcType=VARCHAR}, #{bankCardNo,jdbcType=VARCHAR}, #{bankCardName,jdbcType=VARCHAR}, 
+      #{withdrawDepositRemark,jdbcType=VARCHAR}, #{refundAmount,jdbcType=BIGINT}, #{state,jdbcType=TINYINT}
+      )
+  </insert>
+  
+  <update id="updateByPrimaryKey" parameterType="store.ifresh.os.fitness.model.entity.MemberAccountTransaction" >
+    update fit_member_account_transaction
+    set create_time = #{createTime,jdbcType=TIMESTAMP},
+      update_time = #{updateTime,jdbcType=TIMESTAMP},
+      trans_no = #{transNo,jdbcType=VARCHAR},
+      member_id = #{memberId,jdbcType=INTEGER},
+      order_id = #{orderId,jdbcType=BIGINT},
+      operate_type = #{operateType,jdbcType=TINYINT},
+      pay_method = #{payMethod,jdbcType=TINYINT},
+      amount = #{amount,jdbcType=BIGINT},
+      pre_balance = #{preBalance,jdbcType=BIGINT},
+      post_balance = #{postBalance,jdbcType=BIGINT},
+      thirdparty_payment_account = #{thirdpartyPaymentAccount,jdbcType=VARCHAR},
+      thirdparty_payment_name = #{thirdpartyPaymentName,jdbcType=VARCHAR},
+      bank_name = #{bankName,jdbcType=VARCHAR},
+      bank_address = #{bankAddress,jdbcType=VARCHAR},
+      bank_code = #{bankCode,jdbcType=VARCHAR},
+      bank_card_no = #{bankCardNo,jdbcType=VARCHAR},
+      bank_card_name = #{bankCardName,jdbcType=VARCHAR},
+      withdraw_deposit_remark = #{withdrawDepositRemark,jdbcType=VARCHAR},
+      refund_amount = #{refundAmount,jdbcType=BIGINT},
+      state = #{state,jdbcType=TINYINT}
+    where trans_id = #{transId,jdbcType=INTEGER}
+  </update>
+  
+  <update id="updateByPrimaryKeySelective" parameterType="store.ifresh.os.fitness.model.entity.MemberAccountTransaction" >
+    update fit_member_account_transaction      
+    <set >
+      <if test="createTime != null" >
+        create_time = #{createTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="updateTime != null" >
+        update_time = #{updateTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="transNo != null" >
+        trans_no = #{transNo,jdbcType=VARCHAR},
+      </if>
+      <if test="memberId != null" >
+        member_id = #{memberId,jdbcType=INTEGER},
+      </if>
+      <if test="orderId != null" >
+      	order_id = #{orderId,jdbcType=BIGINT},
+      </if>
+      <if test="operateType != null" >
+      	operate_type = #{operateType,jdbcType=TINYINT},
+      </if>
+      <if test="payMethod != null" >
+      	pay_method = #{payMethod,jdbcType=TINYINT},
+      </if>
+      <if test="amount != null" >
+      	amount = #{amount,jdbcType=BIGINT},
+      </if>
+      <if test="preBalance != null" >
+      	pre_balance = #{preBalance,jdbcType=BIGINT},
+      </if>
+      <if test="postBalance != null" >
+      	post_balance = #{postBalance,jdbcType=BIGINT},
+      </if>
+      <if test="thirdpartyPaymentAccount != null" >
+      	thirdparty_payment_account = #{thirdpartyPaymentAccount,jdbcType=VARCHAR},
+      </if>
+      <if test="thirdpartyPaymentName != null" >
+      	thirdparty_payment_name = #{thirdpartyPaymentName,jdbcType=VARCHAR},
+      </if>
+      <if test="bankName != null" >
+      	bank_name = #{bankName,jdbcType=VARCHAR},
+      </if>
+      <if test="bankAddress != null" >
+      	bank_address = #{bankAddress,jdbcType=VARCHAR},
+      </if>
+      <if test="bankCode != null" >
+      	bank_code = #{bankCode,jdbcType=VARCHAR},
+      </if>
+      <if test="bankCardNo != null" >
+      	bank_card_no = #{bankCardNo,jdbcType=VARCHAR},
+      </if>
+      <if test="bankCardName != null" >
+      	bank_card_name = #{bankCardName,jdbcType=VARCHAR},
+      </if>
+      <if test="withdrawDepositRemark != null" >
+      	withdraw_deposit_remark = #{withdrawDepositRemark,jdbcType=VARCHAR},
+      </if>
+      <if test="refundAmount != null" >
+      	refund_amount = #{refundAmount,jdbcType=BIGINT},
+      </if>
+      <if test="state != null" >
+      	state = #{state,jdbcType=TINYINT}
+      </if>
+    </set>  
+    where trans_id = #{transId,jdbcType=INTEGER}
+  </update>
+  
+  <select id="selectChargeStatDaily" resultMap="ChargeStatMap" >
+    select 
+    date_format(create_time, '%Y-%m-%d') period, sum(amount) amount 
+    from fit_member_account_transaction 
+    where operate_type = '4' and state = '1' group by date_format(create_time, '%Y-%m-%d');
+  </select>
+  
+  <select id="selectChargeStatWeekly" resultMap="ChargeStatMap" >
+    select 
+    date_format(create_time, '%Y-%u') period, sum(amount) amount 
+    from fit_member_account_transaction 
+    where operate_type = '4' and state = '1' group by date_format(create_time, '%Y-%u');
+  </select>
+  
+  <select id="selectChargeStatMonthly" resultMap="ChargeStatMap" >
+    select 
+    date_format(create_time, '%Y-%m') period, sum(amount) amount 
+    from fit_member_account_transaction 
+    where operate_type = '4' and state = '1' group by date_format(create_time, '%Y-%m');
+  </select>
+  
+  <select id="selectCostStatDaily" resultMap="ChargeStatMap" >
+    select 
+    date_format(create_time, '%Y-%m-%d') period, sum(amount) amount 
+    from fit_member_account_transaction where operate_type = '3' group by date_format(create_time, '%Y-%m-%d'); 
+  </select>
+  
+  <select id="selectCostStatWeekly" resultMap="ChargeStatMap" >
+    select 
+    date_format(create_time, '%Y-%u') period, sum(amount) amount 
+    from fit_member_account_transaction where operate_type = '3' group by date_format(create_time, '%Y-%u');
+  </select>
+  
+  <select id="selectCostStatMonthly" resultMap="ChargeStatMap" >
+	select 
+    date_format(create_time, '%Y-%m') period, sum(amount) amount 
+    from fit_member_account_transaction where operate_type = '3' group by date_format(create_time, '%Y-%m');
+  </select>
+  
+  <select id="selectChargeStatHourlyPeriod" resultMap="ChargeStatMap" >
+    select 
+    date_format(create_time, '%Y-%m-%d %H') period, sum(amount) amount 
+    from fit_member_account_transaction 
+    where operate_type = '4' and state = '1' and create_time &gt;= #{startTime, jdbcType=TIMESTAMP} and create_time &lt;= #{endTime, jdbcType=TIMESTAMP}
+    group by date_format(create_time, '%Y-%m-%d %H')
+  </select>
+  
+  <select id="selectCostStatHourlyPeriod" resultMap="ChargeStatMap" >
+    select 
+    date_format(create_time, '%Y-%m-%d %H') period, sum(amount) amount 
+    from fit_member_account_transaction 
+    where operate_type = '3' and create_time &gt;= #{startTime, jdbcType=TIMESTAMP} and create_time &lt;= #{endTime, jdbcType=TIMESTAMP}
+    group by date_format(create_time, '%Y-%m-%d %H')
+  </select>
+  
+  <select id="selectChargeStatDailyPeriod" resultMap="ChargeStatMap" >
+    select 
+    date_format(create_time, '%Y-%m-%d') period, sum(amount) amount 
+    from fit_member_account_transaction 
+    where operate_type = '4' and state = '1' and create_time &gt;= #{startTime, jdbcType=TIMESTAMP} and create_time &lt;= #{endTime, jdbcType=TIMESTAMP}
+    group by date_format(create_time, '%Y-%m-%d')
+  </select>
+  
+  <select id="selectCostStatDailyPeriod" resultMap="ChargeStatMap" >
+    select 
+    date_format(create_time, '%Y-%m-%d') period, sum(amount) amount 
+    from fit_member_account_transaction 
+    where operate_type = '3' and create_time &gt;= #{startTime, jdbcType=TIMESTAMP} and create_time &lt;= #{endTime, jdbcType=TIMESTAMP}
+    group by date_format(create_time, '%Y-%m-%d')
+  </select>
+  
+  <select id="selectChargeTotalPeriod" resultType="java.lang.Long" >
+    select 
+    sum(amount) amount 
+    from fit_member_account_transaction 
+    where operate_type = '4' and state = '1' and create_time &gt;= #{startTime, jdbcType=TIMESTAMP} and create_time &lt;= #{endTime, jdbcType=TIMESTAMP}
+  </select>
+
+  <select id="selectCostTotalPeriod" resultType="java.lang.Long" >
+    select 
+    sum(amount) amount 
+    from fit_member_account_transaction 
+    where operate_type = '3' and create_time &gt;= #{startTime, jdbcType=TIMESTAMP} and create_time &lt;= #{endTime, jdbcType=TIMESTAMP}
+  </select>  
+  
+</mapper>

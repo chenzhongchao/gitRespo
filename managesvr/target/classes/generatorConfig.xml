@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE generatorConfiguration PUBLIC "-//mybatis.org//DTD MyBatis Generator Configuration 1.0//EN" "http://mybatis.org/dtd/mybatis-generator-config_1_0.dtd" >
+<generatorConfiguration>
+    <classPathEntry
+        location="C:\Users\左少\.m2\repository\mysql\mysql-connector-java\5.1.6\mysql-connector-java-5.1.6.jar" />
+    <context id="context1" targetRuntime="MyBatis3">
+        <jdbcConnection driverClass="com.mysql.jdbc.Driver"
+            connectionURL="jdbc:mysql://120.76.221.66:3306/fitness?useUnicode=true&amp;characterEncoding=UTF-8"
+            userId="liuxian" password="liuxian628" />
+        <javaModelGenerator targetPackage="store.ifresh.os.fitness.model.entity"
+            targetProject="C:\MyEclipseWorkSpace\OS_fitness_api\src\main\java" />
+        <sqlMapGenerator targetPackage="store.ifresh.os.fitness.mapping"
+            targetProject="C:\MyEclipseWorkSpace\OS_fitness_api\src\main\java" />
+        <javaClientGenerator targetPackage="store.ifresh.os.fitness.dao"
+            targetProject="C:\MyEclipseWorkSpace\OS_fitness_api\src\main\java" type="XMLMAPPER" />
+        <table schema="fitness" tableName="fit_member_account_transaction" />
+    </context>
+</generatorConfiguration>

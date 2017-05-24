@@ -1,0 +1,140 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="store.ifresh.os.fitness.dao.MemberAccountMapper" >
+  <resultMap id="MemberAccountMap" type="store.ifresh.os.fitness.model.entity.MemberAccount" >
+    <result column="account_id" property="accountId" jdbcType="INTEGER" />
+    <result column="create_time" property="createTime" jdbcType="TIMESTAMP" />
+    <result column="update_time" property="updateTime" jdbcType="TIMESTAMP" />
+    <result column="member_id" property="memberId" jdbcType="INTEGER" />
+    <result column="frozen_balance" property="frozenBalance" jdbcType="BIGINT" />
+    <result column="available_balance" property="availableBalance" jdbcType="BIGINT" />
+    <result column="password" property="password" jdbcType="VARCHAR" />
+  </resultMap>
+  
+  <sql id="Base_Column_List" >
+    account_id, 
+    create_time, 
+    update_time, 
+    member_id, 
+    frozen_balance, 
+    available_balance,
+    password
+  </sql>
+  
+  <sql id="Insert_Column_List" >
+    member_id, 
+    frozen_balance, 
+    available_balance
+  </sql>
+  
+  <select id="selectMemberAccountByPrimaryKey" resultMap="MemberAccountMap" parameterType="java.lang.Integer" >
+    select 
+    <include refid="Base_Column_List" />
+    from fit_member_account
+    where account_id = #{accountId,jdbcType=INTEGER}
+  </select>
+  
+  <select id="selectMemberAccountByMemberId" resultMap="MemberAccountMap" parameterType="java.lang.Integer" >
+    select 
+    <include refid="Base_Column_List" />
+    from fit_member_account
+    where member_id = #{memberId,jdbcType=INTEGER}
+  </select>
+  
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer" >
+    delete from fit_member_account
+    where account_id = #{accountId,jdbcType=INTEGER}
+  </delete>
+  
+  <insert id="insertMemberAccount" parameterType="store.ifresh.os.fitness.model.entity.MemberAccount" >
+    insert into fit_member_account (<include refid="Insert_Column_List"/>)
+    values ( 
+      	#{memberId,jdbcType=INTEGER,typeHandler=store.ifresh.os.fitness.framework.typehandler.IntegerNullTypeHandler}, 
+      	#{frozenBalance,jdbcType=BIGINT,typeHandler=store.ifresh.os.fitness.framework.typehandler.LongNullTypeHandler}, 
+      	#{availableBalance,jdbcType=BIGINT,typeHandler=store.ifresh.os.fitness.framework.typehandler.LongNullTypeHandler}
+      )
+  </insert>
+  
+  <insert id="insertSelective" parameterType="store.ifresh.os.fitness.model.entity.MemberAccount" >
+    insert into fit_member_account
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="accountId != null" >
+        account_id,
+      </if>
+      <if test="createTime != null" >
+        create_time,
+      </if>
+      <if test="updateTime != null" >
+        update_time,
+      </if>
+      <if test="memberId != null" >
+        member_id,
+      </if>
+      <if test="frozenBalance != null" >
+        frozen_balance,
+      </if>
+      <if test="availableBalance != null" >
+        available_balance,
+      </if>
+      <if test="password != null" >
+        password,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="accountId != null" >
+        #{accountId,jdbcType=INTEGER},
+      </if>
+      <if test="createTime != null" >
+        #{createTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="updateTime != null" >
+        #{updateTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="memberId != null" >
+        #{memberId,jdbcType=INTEGER},
+      </if>
+      <if test="frozenBalance != null" >
+        #{frozenBalance,jdbcType=BIGINT},
+      </if>
+      <if test="availableBalance != null" >
+        #{availableBalance,jdbcType=BIGINT},
+      </if>
+      <if test="password != null" >
+        #{password,jdbcType=VARCHAR},
+      </if>
+    </trim>
+  </insert>
+  
+  <update id="updateByPrimaryKeySelective" parameterType="store.ifresh.os.fitness.model.entity.MemberAccount" >
+    update fit_member_account
+    <set >
+      <if test="createTime != null" >
+        create_time = #{createTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="updateTime != null" >
+        update_time = #{updateTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="memberId != null" >
+        member_id = #{memberId,jdbcType=INTEGER},
+      </if>
+      <if test="frozenBalance != null" >
+        frozen_balance = #{frozenBalance,jdbcType=BIGINT},
+      </if>
+      <if test="availableBalance != null" >
+        available_balance = #{availableBalance,jdbcType=BIGINT},
+      </if>
+      <if test="password != null" >
+        password = #{password,jdbcType=VARCHAR},
+      </if>
+    </set>
+    where account_id = #{accountId,jdbcType=INTEGER}
+  </update>
+  
+  <update id="updateMemberAccountBalance" parameterType="store.ifresh.os.fitness.model.entity.MemberAccount" >
+    update fit_member_account
+    set
+      frozen_balance = #{frozenBalance,jdbcType=BIGINT},
+      available_balance = #{availableBalance,jdbcType=BIGINT}
+    where account_id = #{accountId,jdbcType=INTEGER}
+  </update>
+</mapper>

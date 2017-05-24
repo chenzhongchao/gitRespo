@@ -1,0 +1,174 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="store.ifresh.os.fitness.dao.GymMapper">
+	<resultMap id="GymMap" type="store.ifresh.os.fitness.model.entity.Gym" >
+        <result column="gym_id" property="gymId" jdbcType="INTEGER" />
+        <result column="login_id" property="loginId" jdbcType="INTEGER" />
+        <result column="create_time" property="createTime" jdbcType="TIMESTAMP" />
+        <result column="update_time" property="updateTime" jdbcType="TIMESTAMP" />
+        <result column="gym_name" property="gymName" jdbcType="VARCHAR" />
+        <result column="avatar" property="avatar" jdbcType="VARCHAR" />
+        <result column="password" property="password" jdbcType="VARCHAR" />
+        <result column="plain_password" property="plainPassword" jdbcType="VARCHAR" />
+        <result column="province_id" property="provinceId" jdbcType="INTEGER" />
+        <result column="city_id" property="cityId" jdbcType="INTEGER" />
+        <result column="region_id" property="regionId" jdbcType="INTEGER" />
+        <result column="province" property="province" jdbcType="VARCHAR" />
+        <result column="city" property="city" jdbcType="VARCHAR" />
+        <result column="region" property="region" jdbcType="VARCHAR" />
+        <result column="address" property="address" jdbcType="VARCHAR" />
+        <result column="longitude" property="longitude" jdbcType="DECIMAL" />
+        <result column="latitude" property="latitude" jdbcType="DECIMAL" />
+        <result column="tel" property="tel" jdbcType="VARCHAR" />
+        <result column="company_name" property="companyName" jdbcType="VARCHAR" />
+        <result column="legal_person" property="legalPerson" jdbcType="VARCHAR" />
+        <result column="introduction" property="introduction" jdbcType="VARCHAR" />
+        <result column="broadcast" property="broadcast" jdbcType="VARCHAR" />
+        <result column="min_spend_amount" property="minSpendAmount" jdbcType="BIGINT" />
+        <result column="img_introductions" property="imgIntroductions" jdbcType="LONGVARCHAR" />
+        <result column="status" property="status" jdbcType="INTEGER" />
+        <result column="last_login" property="lastLogin" jdbcType="TIMESTAMP" />
+    </resultMap>
+    
+    <sql id="Base_Column_List" >
+        gym_id,
+        login_id,
+        create_time,
+        update_time,
+        gym_name,
+        avatar,
+        password,
+        plain_password,
+        province_id,
+        city_id,
+        region_id,
+        province,
+        city,
+        region,
+        address,
+        longitude,
+        latitude,
+        tel,
+        company_name,
+        legal_person,
+        introduction,
+        broadcast,
+        min_spend_amount,
+        img_introductions,
+        status,
+        last_login
+    </sql>
+    
+    <sql id="Insert_Column_List" >
+    	login_id,
+        gym_name,
+        avatar,
+        password,
+        plain_password,
+        province_id,
+        city_id,
+        region_id,
+        province,
+        city,
+        region,
+        address,
+        longitude,
+        latitude,
+        tel,
+        company_name,
+        legal_person,
+        introduction,
+        broadcast,
+        min_spend_amount,
+        img_introductions,
+        status,
+        last_login
+    </sql>
+    
+	<insert id="insertGym" parameterType="store.ifresh.os.fitness.model.entity.Gym" useGeneratedKeys="true" keyProperty="gymId">
+    	insert into fit_gym (<include refid="Insert_Column_List" />) 
+    	values (
+    			#{loginId,jdbcType=INTEGER,typeHandler=store.ifresh.os.fitness.framework.typehandler.IntegerNullTypeHandler},
+	    		#{gymName,jdbcType=VARCHAR,typeHandler=store.ifresh.os.fitness.framework.typehandler.StringNullTypeHandler},
+	    		#{avatar,jdbcType=VARCHAR,typeHandler=store.ifresh.os.fitness.framework.typehandler.StringNullTypeHandler},
+	    		#{password,jdbcType=VARCHAR,typeHandler=store.ifresh.os.fitness.framework.typehandler.StringNullTypeHandler},
+	    		#{plainPassword,jdbcType=VARCHAR,typeHandler=store.ifresh.os.fitness.framework.typehandler.StringNullTypeHandler},
+	    		#{provinceId,jdbcType=INTEGER,typeHandler=store.ifresh.os.fitness.framework.typehandler.IntegerNullTypeHandler},
+    			#{cityId,jdbcType=INTEGER,typeHandler=store.ifresh.os.fitness.framework.typehandler.IntegerNullTypeHandler},
+    			#{regionId,jdbcType=INTEGER,typeHandler=store.ifresh.os.fitness.framework.typehandler.IntegerNullTypeHandler},
+    			#{province,jdbcType=VARCHAR,typeHandler=store.ifresh.os.fitness.framework.typehandler.StringNullTypeHandler},
+    			#{city,jdbcType=VARCHAR,typeHandler=store.ifresh.os.fitness.framework.typehandler.StringNullTypeHandler},
+    			#{region,jdbcType=VARCHAR,typeHandler=store.ifresh.os.fitness.framework.typehandler.StringNullTypeHandler},
+    			#{address,jdbcType=INTEGER,typeHandler=store.ifresh.os.fitness.framework.typehandler.StringNullTypeHandler},
+    			#{longitude,jdbcType=DECIMAL,typeHandler=store.ifresh.os.fitness.framework.typehandler.DoubleNullTypeHandler},
+    			#{latitude,jdbcType=DECIMAL,typeHandler=store.ifresh.os.fitness.framework.typehandler.DoubleNullTypeHandler},
+	    		#{tel,jdbcType=VARCHAR,typeHandler=store.ifresh.os.fitness.framework.typehandler.StringNullTypeHandler},
+	    		#{companyName,jdbcType=VARCHAR,typeHandler=store.ifresh.os.fitness.framework.typehandler.StringNullTypeHandler},
+	    		#{legalPerson,jdbcType=VARCHAR,typeHandler=store.ifresh.os.fitness.framework.typehandler.StringNullTypeHandler},
+	    		#{introduction,jdbcType=VARCHAR,typeHandler=store.ifresh.os.fitness.framework.typehandler.StringNullTypeHandler},
+	    		#{broadcast,jdbcType=VARCHAR,typeHandler=store.ifresh.os.fitness.framework.typehandler.StringNullTypeHandler},
+	    		#{minSpendAmount,jdbcType=BIGINT,typeHandler=store.ifresh.os.fitness.framework.typehandler.LongNullTypeHandler},
+	    		#{imgIntroductions,jdbcType=LONGVARCHAR,typeHandler=store.ifresh.os.fitness.framework.typehandler.StringNullTypeHandler},
+	    		#{status,jdbcType=INTEGER,typeHandler=store.ifresh.os.fitness.framework.typehandler.IntegerNullTypeHandler},
+	    		#{lastLogin,jdbcType=TIMESTAMP,typeHandler=store.ifresh.os.fitness.framework.typehandler.DateNullTypeHandler}
+    	)
+    </insert>    
+    
+    <update id="updateGym" parameterType="store.ifresh.os.fitness.model.entity.Gym" >
+        update fit_gym
+        <set>
+        	<if test="loginId != null"> login_id = #{loginId,jdbcType=INTEGER}, </if>
+        	<if test="createTime != null"> create_time = #{createTime,jdbcType=TIMESTAMP}, </if>
+        	<if test="updateTime != null"> update_time = #{updateTime,jdbcType=TIMESTAMP}, </if>
+        	<if test="gymName != null"> gym_name = #{gymName,jdbcType=VARCHAR}, </if>
+        	<if test="avatar != null"> avatar = #{avatar,jdbcType=VARCHAR}, </if>
+	    	<if test="password != null"> password = #{password,jdbcType=VARCHAR}, </if>
+	    	<if test="plainPassword != null"> plain_password = #{plainPassword,jdbcType=VARCHAR}, </if>
+	    	<if test="provinceId != null"> province_id = #{provinceId,jdbcType=INTEGER}, </if>
+	    	<if test="cityId != null"> city_id = #{cityId,jdbcType=INTEGER}, </if>
+	    	<if test="regionId != null"> region_id = #{regionId,jdbcType=INTEGER}, </if>
+	    	<if test="province != null"> province = #{province,jdbcType=VARCHAR}, </if>
+	    	<if test="city != null"> city = #{city,jdbcType=VARCHAR}, </if>
+	    	<if test="region != null"> region = #{region,jdbcType=VARCHAR}, </if>
+	    	<if test="address != null"> address = #{address,jdbcType=INTEGER}, </if>
+	    	<if test="longitude != null"> longitude = #{longitude,jdbcType=DECIMAL}, </if>
+	    	<if test="latitude != null"> latitude = #{latitude,jdbcType=DECIMAL}, </if>
+	    	<if test="tel != null"> tel = #{tel,jdbcType=VARCHAR}, </if>
+	    	<if test="companyName != null"> company_name = #{companyName,jdbcType=VARCHAR}, </if>
+	    	<if test="legalPerson != null"> legal_person = #{legalPerson,jdbcType=VARCHAR}, </if>
+	    	<if test="introduction != null"> introduction = #{introduction,jdbcType=VARCHAR}, </if>
+	    	<if test="broadcast != null"> broadcast = #{broadcast,jdbcType=VARCHAR}, </if>
+	    	<if test="minSpendAmount != null"> min_spend_amount = #{minSpendAmount,jdbcType=BIGINT}, </if>
+	    	<if test="imgIntroductions != null"> img_introductions = #{imgIntroductions,jdbcType=LONGVARCHAR}, </if>
+	    	<if test="status != null"> status = #{status,jdbcType=INTEGER}, </if>
+	    	<if test="lastLogin != null"> last_login = #{lastLogin,jdbcType=TIMESTAMP}, </if>
+        </set> 
+        where gym_id = #{gymId,jdbcType=INTEGER}
+    </update>
+    
+	<select id="getGymById" parameterType="java.lang.Integer" resultMap="GymMap">
+        select <include refid="Base_Column_List" />
+         from fit_gym where gym_id = #{gymId, jdbcType=INTEGER}
+    </select>
+    
+    <select id="getGymByLoginId" parameterType="java.lang.Integer" resultMap="GymMap">
+        select <include refid="Base_Column_List" />
+         from fit_gym where login_id = #{loginId, jdbcType=INTEGER}
+    </select>
+    
+    <select id="getGymByGymName" parameterType="java.lang.String" resultMap="GymMap">
+        select <include refid="Base_Column_List" />
+         from fit_gym where gym_name = #{gymName, jdbcType=VARCHAR}
+    </select>
+    
+    <select id="getGymList" resultMap="GymMap">
+        select <include refid="Base_Column_List" />
+         from fit_gym 
+         <where>
+         	<if test="page.extraParam != null and page.extraParam.gym_name != null">
+    			and gym_name like CONCAT('%', trim(#{page.extraParam.gym_name, jdbcType=VARCHAR}), '%') 
+    		</if>
+         </where>
+         order by create_time
+    </select>
+</mapper>

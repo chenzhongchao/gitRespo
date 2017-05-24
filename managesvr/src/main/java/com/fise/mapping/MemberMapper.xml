@@ -1,0 +1,334 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="store.ifresh.os.fitness.dao.MemberMapper">
+	<resultMap id="MemberMap" type="store.ifresh.os.fitness.model.entity.Member" >
+        <result column="member_id" property="memberId" jdbcType="INTEGER" />
+        <result column="create_time" property="createTime" jdbcType="TIMESTAMP" />
+        <result column="update_time" property="updateTime" jdbcType="TIMESTAMP" />
+        <result column="mobile" property="mobile" jdbcType="VARCHAR" />
+        <result column="nick_name" property="nickName" jdbcType="VARCHAR" />
+        <result column="sex" property="sex" jdbcType="INTEGER" />
+        <result column="avatar" property="avatar" jdbcType="VARCHAR" />
+        <result column="reg_time" property="regTime" jdbcType="TIMESTAMP" />
+        <result column="password" property="password" jdbcType="VARCHAR" />
+        <result column="email" property="email" jdbcType="VARCHAR" />
+        <result column="real_name" property="realName" jdbcType="VARCHAR" />
+        <result column="birthday" property="birthday" jdbcType="DATE" />
+        <result column="height" property="height" jdbcType="DOUBLE" />
+        <result column="weight" property="weight" jdbcType="DOUBLE" />
+        <result column="province_id" property="provinceId" jdbcType="INTEGER" />
+        <result column="city_id" property="cityId" jdbcType="INTEGER" />
+        <result column="region_id" property="regionId" jdbcType="INTEGER" />
+        <result column="province" property="province" jdbcType="VARCHAR" />
+        <result column="city" property="city" jdbcType="VARCHAR" />
+        <result column="region" property="region" jdbcType="VARCHAR" />
+        <result column="address" property="address" jdbcType="VARCHAR" />
+        <result column="zip" property="zip" jdbcType="VARCHAR" />
+        <result column="tel" property="tel" jdbcType="VARCHAR" />
+        <result column="remark" property="remark" jdbcType="LONGVARCHAR" />
+        <result column="status" property="status" jdbcType="INTEGER" />
+        <result column="last_login" property="lastLogin" jdbcType="TIMESTAMP" />
+        <result column="signature" property="signature" jdbcType="VARCHAR" />
+        <result column="rc_token" property="rcToken" jdbcType="VARCHAR" />
+        <result column="access_token" property="accessToken" jdbcType="VARCHAR" />
+    </resultMap>
+    
+    <resultMap id="RegStatMap" type="store.ifresh.os.fitness.model.dto.RegisterStatDto" >
+   		<result column="period" property="period" jdbcType="VARCHAR" />
+        <result column="count" property="count" jdbcType="INTEGER" /> 
+    </resultMap>
+    
+    <sql id="Base_Column_List" >
+        member_id,
+        create_time,
+        update_time,
+        mobile,
+        nick_name,
+        sex,
+        avatar,
+        reg_time,
+        password,
+        email,
+        real_name,
+        birthday,
+        height,
+        weight,
+        province_id,
+        city_id,
+        region_id,
+        province,
+        city,
+        region,
+        address,
+        zip,
+        tel,
+        remark,
+        status,
+        last_login,
+        signature,
+        rc_token,
+        access_token
+    </sql>
+    
+    <sql id="Insert_Column_List" >
+        mobile,
+        nick_name,
+        sex,
+        avatar,
+        reg_time,
+        password,
+        email,
+        real_name,
+        birthday,
+        height,
+        weight,
+        province_id,
+        city_id,
+        region_id,
+        province,
+        city,
+        region,
+        address,
+        zip,
+        tel,
+        remark,
+        status,
+        last_login,
+        signature,
+        rc_token,
+        access_token
+    </sql>
+    
+	<insert id="insertMember" parameterType="store.ifresh.os.fitness.model.entity.Member" useGeneratedKeys="true" keyProperty="memberId">
+    	insert into fit_member (
+    		<trim suffixOverrides=",">
+	    		<if test="memberId != null"> member_id, </if>
+	    		<if test="mobile !=null"> mobile, </if>
+	    		<if test="nickName != null"> nick_name, </if>
+	    		<if test="sex != null"> sex, </if>
+	    		<if test="avatar != null"> avatar, </if>
+	    		<if test="regTime != null"> reg_time, </if>
+	    		<if test="password != null"> password, </if>
+	    		<if test="email != null"> email, </if>
+	    		<if test="realName != null"> real_name, </if>
+	    		<if test="birthday != null"> birthday, </if>
+	    		<if test="height != null"> height, </if>
+	    		<if test="weight != null"> weight, </if>
+	    		<if test="provinceId != null"> province_id, </if>
+	    		<if test="cityId != null"> city_id, </if>
+	    		<if test="regionId != null"> region_id, </if>
+	    		<if test="province != null"> province, </if>
+	    		<if test="city != null"> city, </if>
+	    		<if test="region != null"> region, </if>
+	    		<if test="address != null"> address, </if>
+	    		<if test="zip != null"> zip, </if>
+	    		<if test="tel != null"> tel, </if>
+	    		<if test="remark != null"> remark, </if>
+	    		<if test="status != null"> status, </if>
+	    		<if test="lastLogin != null"> last_login, </if>
+	    		<if test="signature != null"> signature, </if>
+	    		<if test="rcToken != null"> rc_token, </if>
+	    		<if test="accessToken != null"> access_token, </if>
+    		</trim>
+    	) 
+    	values (
+    		<trim suffixOverrides=",">
+	    		<if test="memberId != null"> #{memberId,jdbcType=INTEGER}, </if>
+	    		<if test="mobile !=null"> #{mobile,jdbcType=VARCHAR}, </if>
+	    		<if test="nickName != null"> #{nickName,jdbcType=VARCHAR}, </if>
+	    		<if test="sex != null"> #{sex,jdbcType=INTEGER}, </if>
+	    		<if test="avatar != null"> #{avatar,jdbcType=VARCHAR}, </if>
+	    		<if test="regTime != null"> #{regTime,jdbcType=TIMESTAMP}, </if>
+	    		<if test="password != null"> #{password,jdbcType=VARCHAR}, </if>
+	    		<if test="email != null"> #{email,jdbcType=VARCHAR}, </if>
+	    		<if test="realName != null"> #{realName,jdbcType=VARCHAR}, </if>
+	    		<if test="birthday != null"> #{birthday,jdbcType=DATE}, </if>
+	    		<if test="height != null"> #{height,jdbcType=DOUBLE}, </if>
+	    		<if test="weight != null"> #{weight,jdbcType=DOUBLE}, </if>
+	    		<if test="provinceId != null"> #{provinceId,jdbcType=INTEGER}, </if>
+	    		<if test="cityId != null"> #{cityId,jdbcType=INTEGER}, </if>
+	    		<if test="regionId != null"> #{regionId,jdbcType=INTEGER}, </if>
+	    		<if test="province != null"> #{province,jdbcType=VARCHAR}, </if>
+	    		<if test="city != null"> #{city,jdbcType=VARCHAR}, </if>
+	    		<if test="region != null"> #{region,jdbcType=VARCHAR}, </if>
+	    		<if test="address != null"> #{address,jdbcType=INTEGER}, </if>
+	    		<if test="zip != null"> #{zip,jdbcType=VARCHAR}, </if>
+	    		<if test="tel != null"> #{tel,jdbcType=VARCHAR}, </if>
+	    		<if test="remark != null"> #{remark,jdbcType=LONGVARCHAR}, </if>
+	    		<if test="status != null"> #{status,jdbcType=INTEGER}, </if>
+	    		<if test="lastLogin != null"> #{lastLogin,jdbcType=TIMESTAMP}, </if>
+	    		<if test="signature != null"> #{signature,jdbcType=VARCHAR}, </if>
+	    		<if test="rcToken != null"> #{rcToken,jdbcType=VARCHAR}, </if>
+	    		<if test="accessToken != null"> #{accessToken,jdbcType=VARCHAR}, </if>
+	    	</trim>
+    	)
+    </insert>    
+    
+    <insert id="insertMember2" parameterType="store.ifresh.os.fitness.model.entity.Member" useGeneratedKeys="true" keyProperty="memberId">
+    	insert into fit_member (<include refid="Insert_Column_List" />) 
+    	values (
+    		#{mobile,jdbcType=VARCHAR,typeHandler=store.ifresh.os.fitness.framework.typehandler.StringNullTypeHandler},
+    		#{nickName,jdbcType=VARCHAR,typeHandler=store.ifresh.os.fitness.framework.typehandler.StringNullTypeHandler},
+    		#{sex,jdbcType=SMALLINT,typeHandler=store.ifresh.os.fitness.framework.typehandler.IntegerNullTypeHandler},
+    		#{avatar,jdbcType=VARCHAR,typeHandler=store.ifresh.os.fitness.framework.typehandler.StringNullTypeHandler},
+    		#{regTime,jdbcType=TIMESTAMP,typeHandler=store.ifresh.os.fitness.framework.typehandler.DateNullTypeHandler},
+    		#{password,jdbcType=VARCHAR,typeHandler=store.ifresh.os.fitness.framework.typehandler.StringNullTypeHandler},
+    		#{email,jdbcType=VARCHAR,typeHandler=store.ifresh.os.fitness.framework.typehandler.StringNullTypeHandler},
+    		#{realName,jdbcType=VARCHAR,typeHandler=store.ifresh.os.fitness.framework.typehandler.StringNullTypeHandler},
+    		#{birthday,jdbcType=DATE,typeHandler=store.ifresh.os.fitness.framework.typehandler.DateNullTypeHandler},
+    		#{height,jdbcType=DOUBLE,typeHandler=store.ifresh.os.fitness.framework.typehandler.DoubleNullTypeHandler},
+    		#{weight,jdbcType=DOUBLE,typeHandler=store.ifresh.os.fitness.framework.typehandler.DoubleNullTypeHandler},
+    		#{provinceId,jdbcType=INTEGER,typeHandler=store.ifresh.os.fitness.framework.typehandler.IntegerNullTypeHandler},
+    		#{cityId,jdbcType=INTEGER,typeHandler=store.ifresh.os.fitness.framework.typehandler.IntegerNullTypeHandler},
+    		#{regionId,jdbcType=INTEGER,typeHandler=store.ifresh.os.fitness.framework.typehandler.IntegerNullTypeHandler},
+    		#{province,jdbcType=VARCHAR,typeHandler=store.ifresh.os.fitness.framework.typehandler.StringNullTypeHandler},
+    		#{city,jdbcType=VARCHAR,typeHandler=store.ifresh.os.fitness.framework.typehandler.StringNullTypeHandler},
+    		#{region,jdbcType=VARCHAR,typeHandler=store.ifresh.os.fitness.framework.typehandler.StringNullTypeHandler},
+    		#{address,jdbcType=INTEGER,typeHandler=store.ifresh.os.fitness.framework.typehandler.IntegerNullTypeHandler},
+    		#{zip,jdbcType=VARCHAR,typeHandler=store.ifresh.os.fitness.framework.typehandler.StringNullTypeHandler},
+    		#{tel,jdbcType=VARCHAR,typeHandler=store.ifresh.os.fitness.framework.typehandler.StringNullTypeHandler},
+    		#{remark,jdbcType=LONGVARCHAR,typeHandler=store.ifresh.os.fitness.framework.typehandler.StringNullTypeHandler},
+    		#{status,jdbcType=INTEGER,typeHandler=store.ifresh.os.fitness.framework.typehandler.IntegerNullTypeHandler},
+    		#{lastLogin,jdbcType=TIMESTAMP,typeHandler=store.ifresh.os.fitness.framework.typehandler.DateNullTypeHandler},
+    		#{signature,jdbcType=VARCHAR,typeHandler=store.ifresh.os.fitness.framework.typehandler.StringNullTypeHandler},
+    		#{rcToken,jdbcType=VARCHAR,typeHandler=store.ifresh.os.fitness.framework.typehandler.StringNullTypeHandler},
+    		#{accessToken,jdbcType=VARCHAR,typeHandler=store.ifresh.os.fitness.framework.typehandler.StringNullTypeHandler}
+    	)
+    </insert>
+    
+    <update id="updateMember" parameterType="store.ifresh.os.fitness.model.entity.Member" >
+        update fit_member
+        <set>
+	    	<if test="mobile !=null"> mobile = #{mobile,jdbcType=VARCHAR}, </if>
+	    	<if test="nickName != null"> nick_name = #{nickName,jdbcType=VARCHAR}, </if>
+	    	<if test="sex != null"> sex = #{sex,jdbcType=INTEGER}, </if>
+	    	<if test="avatar != null"> avatar = #{avatar,jdbcType=VARCHAR}, </if>
+	    	<if test="regTime != null"> reg_time = #{regTime,jdbcType=TIMESTAMP}, </if>
+	    	<if test="password != null"> password = #{password,jdbcType=VARCHAR}, </if>
+	    	<if test="email != null"> email = #{email,jdbcType=VARCHAR}, </if>
+	    	<if test="realName != null"> real_name = #{realName,jdbcType=VARCHAR}, </if>
+	    	<if test="birthday != null"> birthday = #{birthday,jdbcType=DATE}, </if>
+	    	<if test="height != null"> height = #{height,jdbcType=DOUBLE}, </if>
+	    	<if test="weight != null"> weight = #{weight,jdbcType=DOUBLE}, </if>
+	    	<if test="provinceId != null"> province_id = #{provinceId,jdbcType=INTEGER}, </if>
+	    	<if test="cityId != null"> city_id = #{cityId,jdbcType=INTEGER}, </if>
+	    	<if test="regionId != null"> region_id = #{regionId,jdbcType=INTEGER}, </if>
+	    	<if test="province != null"> province = #{province,jdbcType=VARCHAR}, </if>
+	    	<if test="city != null"> city = #{city,jdbcType=VARCHAR}, </if>
+	    	<if test="region != null"> region = #{region,jdbcType=VARCHAR}, </if>
+	    	<if test="address != null"> address = #{address,jdbcType=INTEGER}, </if>
+	    	<if test="zip != null"> zip = #{zip,jdbcType=VARCHAR}, </if>
+	    	<if test="tel != null"> tel = #{tel,jdbcType=VARCHAR}, </if>
+	    	<if test="remark != null"> remark = #{remark,jdbcType=LONGVARCHAR}, </if>
+	    	<if test="status != null"> status = #{status,jdbcType=INTEGER}, </if>
+	    	<if test="lastLogin != null"> last_login = #{lastLogin,jdbcType=TIMESTAMP}, </if>
+	    	<if test="signature != null"> signature = #{signature,jdbcType=VARCHAR}, </if>
+	    	<if test="rcToken != null"> rc_token = #{rcToken,jdbcType=VARCHAR}, </if>
+	    	<if test="accessToken != null"> access_token = #{accessToken,jdbcType=VARCHAR}, </if>
+        </set> 
+        where member_id = #{memberId,jdbcType=INTEGER}
+    </update>
+    
+    <update id="updateMemberLastLogin" parameterType="store.ifresh.os.fitness.model.entity.Member">
+    	update fit_member set last_login = #{lastLogin, jdbcType=BIGINT} WHERE mobile = #{mobile,jdbcType=VARCHAR}
+    </update>
+
+	<select id="getMemberById" parameterType="java.lang.Integer" resultMap="MemberMap">
+        select <include refid="Base_Column_List" />
+         from fit_member where member_id = #{memberId, jdbcType=INTEGER}
+    </select>
+    
+    <select id="getMemberByMobile" parameterType="java.lang.String" resultMap="MemberMap">
+        select <include refid="Base_Column_List" />
+         from fit_member where mobile = #{mobile, jdbcType=VARCHAR}
+    </select>
+    
+    <select id="selectMemberListByMobile" parameterType="java.lang.String" resultMap="MemberMap">
+        select <include refid="Base_Column_List" />
+         from fit_member where mobile like CONCAT(trim(#{mobile, jdbcType=VARCHAR}), '%') 
+    </select>
+    
+    <select id="selectMemberListByName" parameterType="java.lang.String" resultMap="MemberMap">
+        select <include refid="Base_Column_List" />
+         from fit_member where nick_name like CONCAT(trim(#{nickName, jdbcType=VARCHAR}), '%') 
+    </select>
+    
+    <select id="getMobileCount" parameterType="java.lang.String" resultType="java.lang.Integer">
+        select count(1)
+         from fit_member where mobile = #{mobile, jdbcType=VARCHAR}
+    </select>
+    
+    <select id="selectMemberPage" resultMap="MemberMap">
+        select <include refid="Base_Column_List" />
+         from fit_member 
+         <where>
+         	<if test="page.extraParam != null and page.extraParam.nick_name != null">
+    			and nick_name like CONCAT('%', trim(#{page.extraParam.nick_name, jdbcType=VARCHAR}), '%') 
+    		</if>
+    		<if test="page.extraParam != null and page.extraParam.mobile != null">
+    			and mobile like CONCAT('%', trim(#{page.extraParam.mobile, jdbcType=VARCHAR}), '%') 
+    		</if>
+         </where>
+         order by create_time
+    </select>
+    
+    <select id="selectTotalCount" resultType="java.lang.Long">
+        select count(*)
+         from fit_member;
+    </select>
+    
+    <select id="selectFrozenCount" resultType="java.lang.Long">
+        select count(*)
+         from fit_member where status = 1;
+    </select>
+    
+    <select id="selectActiveCount" resultType="java.lang.Long">
+        select count(*)
+         from fit_member where last_login &gt;= #{beginTime, jdbcType=TIMESTAMP}
+    </select>
+    
+    <select id="selectRegDaily" resultMap="RegStatMap">
+        select 
+        date_format(reg_time, '%Y-%m-%d') period, count(*) count 
+        from fit_member 
+        group by date_format(reg_time, '%Y-%m-%d');
+    </select>
+    
+    <select id="selectRegWeekly" resultMap="RegStatMap">
+        select 
+        date_format(reg_time, '%Y-%u') period, count(*) count 
+        from fit_member 
+        group by date_format(reg_time, '%Y-%u'); 
+    </select>
+
+    <select id="selectRegMonthly" resultMap="RegStatMap">
+        select 
+        date_format(reg_time, '%Y-%m') period, count(*) count 
+        from fit_member 
+        group by date_format(reg_time, '%Y-%m'); 
+    </select>    
+    
+    <select id="selectRegHourlyPeriod" resultMap="RegStatMap">
+        select 
+        date_format(reg_time, '%Y-%m-%d %H') period, count(*) count 
+        from fit_member 
+        where reg_time &gt;= #{startTime,jdbcType=TIMESTAMP} and reg_time &lt;= #{endTime,jdbcType=TIMESTAMP}
+        group by date_format(reg_time, '%Y-%m-%d %H');
+    </select> 
+
+    <select id="getRegDailyStatPeriod" resultMap="RegStatMap">
+        select 
+        date_format(reg_time, '%Y-%m-%d') period, count(*) count 
+        from fit_member 
+        where reg_time &gt;= #{startTime, jdbcType=TIMESTAMP} and reg_time &lt;= #{endTime, jdbcType=TIMESTAMP}
+        group by date_format(reg_time, '%Y-%m-%d');
+    </select> 
+    
+    <select id="selectRegTotalPeriod" resultType="java.lang.Integer">
+        select 
+       	count(*) count 
+        from fit_member 
+        where reg_time &gt;= #{startTime, jdbcType=TIMESTAMP} and reg_time &lt;= #{endTime, jdbcType=TIMESTAMP}
+    </select> 
+    
+</mapper>

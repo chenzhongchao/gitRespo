@@ -1,0 +1,115 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper 
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" 
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+
+<mapper namespace="com.fise.mapping.FiseDeviceMapper">
+	<resultMap type="com.fise.model.entity.DeviceInfo" id="deviceinfo">
+		<id property="DeviceId" column="id"/>
+		<result property="DeviceIME" column="IME"/>
+		<result property="DeviceXW" column="account"/>
+		<result property="ProductName" column="type"/>
+		<result property="PhoneNo" column="mobile"/>
+		<result property="status" column="status"/>	
+		<result property="DepartId" column="departId"/>
+	</resultMap>
+	
+	<resultMap type="com.fise.model.entity.FiseDevice" id="fisedevice">
+		<id property="DeviceId" column="id"/>
+		<result property="DeviceIME" column="IME"/>
+		<result property="DeviceXW" column="account"/>
+		<result property="ProductName" column="type"/>
+		<result property="PhoneNo" column="mobile"/>
+		<result property="status" column="status"/>	
+		<result property="DepartId" column="departId"/>
+	</resultMap>
+	
+	<resultMap type="com.fise.model.dto.DeviceTypeInfo" id="DeviceTypeInfo">
+		<id property="DeviceTypeId" column="id"/>
+		<result property="DeviceType" column="clientType"/>
+		<result property="DeviceName" column="clientName"/>	
+	</resultMap>
+	
+	
+	<resultMap type="com.fise.model.dto.Devices" id="devices">
+		<result property="CompanyName" column="departId"/>
+		<result property="OnlineDevice" column="OnlineDevice"/>
+		<result property="ActiveDevice" column="active"/>
+		<result property="UnActiveDevice" column="unactive"/>
+	</resultMap>
+	
+	
+	<sql id="sql">id,IME,account,type,mobile,status</sql>
+	
+	
+	<insert id="insert_FiseDevices" parameterType="java.util.List">
+		insert into FiseDevice
+		(IME,account,departId,type) 
+		values 	
+		<foreach collection="list" index="index" item="item" separator=",">
+		(#{item.DeviceIME},#{item.DeviceXW},#{item.DepartId},#{item.ProductType})
+		</foreach>		
+	</insert>
+	
+	<select id="query_deviceInfo" parameterType="map" resultMap="deviceinfo">
+		select<include refid="sql"/>from FiseDevice 
+		<where>
+			<if test="DeviceIME!=null">and IME=#{DeviceIME}</if>
+			<if test="DeviceXW!=null">and account=#{DeviceXW}</if>
+		</where>
+	</select>
+	
+	<delete id="delete_device" parameterType="int">
+		delete from FiseDevice where id=#{id}
+	</delete>
+	
+	<update id="update_deviceInfo" parameterType="com.fise.model.entity.DeviceInfo">
+		update FiseDevice 
+		<set>
+			<if test="DeviceIME!=null">IME=#{DeviceIME},</if>
+			<if test="DeviceXW!=null">account=#{DeviceXW},</if>
+			<if test="DepartId!=null">departId=#{DepartId},</if>
+			<if test="PhoneNo!=null">mobile=#{PhoneNo},</if>
+		</set>
+		where id=#{DeviceId}
+	</update>
+	
+	<select id="findpartdeviceinfo" parameterType="map" resultMap="fisedevice">
+		select<include refid="sql"/>from FiseDevice 
+		where departId=#{DepartId} 
+		limit #{Page},#{PageSize}
+	</select>
+	
+	<select id="findAllDeviceInfo" resultMap="DeviceTypeInfo">
+		select id,clientType,clientName from IMClientType
+	</select>
+	
+	<select id="getCompanyDeviceInfo" parameterType="int" resultMap="devices">
+		select i.OnlineDevice,i.active,n.unactive,i.departId
+		from
+		((select p.active,m.OnlineDevice,p.departId 
+		from
+		((select departId,count(status) as active from FiseDevice where status=1 and departId=#{DepartId}) p
+		left join
+		(select departId,count(online_status) as OnlineDevice from IMUser where online_status=1 and departId=#{DepartId}) m
+		on p.departId=m.departId)) i
+		left join
+		(select departId,count(online_status) as unactive from IMUser where online_status=0 and departId=#{DepartId}) n
+		on i.departId=n.departId) 
+	</select>
+	
+
+	<select id="findAllDeviceCount" resultMap="devices">
+		select i.OnlineDevice,i.active,n.unactive,i.departId
+		from
+		((select p.active,m.OnlineDevice,p.departId 
+		from
+		((select departId,count(status) as active from FiseDevice where status=1 group by departId) p
+		left join
+		(select departId,count(online_status) as OnlineDevice from IMUser where online_status=1 group by departId) m
+		on p.departId=m.departId)) i
+		left join
+		(select departId,count(online_status) as unactive from IMUser where online_status=0 group by departId) n
+		on i.departId=n.departId) 
+	</select>
+</mapper>
